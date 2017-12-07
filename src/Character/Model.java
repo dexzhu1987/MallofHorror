@@ -5,7 +5,7 @@ public class Model extends Character {
         super("Model", 7, 1, 1);
     }
 
-    public boolean scream(){
+    public boolean attrackZombie(){
        return true;
     }
 }
