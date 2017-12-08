@@ -1,14 +1,19 @@
 package Room;
 
+import java.util.*;
+import Character.*;
+
 public abstract class Room {
-    int roomNum;
-    String name;
-    int capability;
+    protected int roomNum;
+    protected String name;
+    protected int capability;
+    protected List<GameCharacter> roomCharaters;
 
     public Room(int roomNum, String name, int capability) {
         this.roomNum = roomNum;
         this.name = name;
         this.capability = capability;
+        roomCharaters = new ArrayList<>();
     }
 
     public boolean defend(){
@@ -26,5 +31,13 @@ public abstract class Room {
 
     public int getCapability() {
         return capability;
+    }
+
+    public void enter(GameCharacter character){
+        roomCharaters.add(character);
+    }
+
+    public void leave(GameCharacter character){
+        roomCharaters.remove(character);
     }
 }

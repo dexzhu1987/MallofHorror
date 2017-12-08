@@ -1,6 +1,6 @@
 package Character;
 
-public class Model extends Character {
+public class Model extends GameCharacter {
     public Model() {
         super("Model", 7, 1, 1);
     }
