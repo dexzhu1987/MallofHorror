@@ -1,10 +1,10 @@
 package Character;
 
 public abstract class Character {
-    String name;
-    int points;
-    int strength;
-    int vote;
+    private String name;
+    private int points;
+    private int strength;
+    private int vote;
 
     public Character(String name, int points, int strength, int vote) {
         this.name = name;
@@ -13,13 +13,26 @@ public abstract class Character {
         this.vote = vote;
     }
 
-    public void move(int roomNum){
+//    public int vote (){
+//        int votesum = 0;
+//        return votesum += getVote();
+//    }
 
+    public String getName() {
+        return name;
     }
 
-    public int vote (){
-        int votesum=0;
-        return votesum;
+    public int getPoints() {
+        return points;
     }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public int getVote() {
+        return vote;
+    }
+
 
 }

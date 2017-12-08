@@ -1,14 +1,9 @@
 package Character;
 
-public class Model extends Character {
-    public Model() {
-        super("Model", 7, 1, 1);
+public class GunMan extends Character {
+    public GunMan() {
+        super("Gun Man", 3, 1, 2);
     }
-
-    public boolean attrackZombie(){
-       return true;
-    }
-
     @Override
     public int getVote() {
         return super.getVote();
