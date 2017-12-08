@@ -64,5 +64,20 @@ public class GameBroad {
       return sum;
     }
 
+    public Room matchRoom(int roomNum){
+      int q = 0;
+      for (int i=0; i<rooms.size(); i++){
+          if (roomNum==rooms.get(i).getRoomNum()){
+              q = i;
+          }
+      }
+      return rooms.get(q);
+    }
+
+    public void printRooms(){
+        for (int i=0; i<rooms.size(); i++){
+            System.out.println(rooms.get(i));
+        }
+    }
 
 }

@@ -40,4 +40,19 @@ public abstract class Room {
     public void leave(GameCharacter character){
         roomCharaters.remove(character);
     }
+
+    public boolean isFull(){
+        if (roomCharaters.size()>=capability){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    @Override
+    public String toString() {
+        return name + " has " + roomCharaters ;
+    }
 }

@@ -4,6 +4,8 @@ public class GunMan extends GameCharacter {
     public GunMan() {
         super("Gun Man", 3, 1, 2);
     }
+
+
     @Override
     public int getVote() {
         return super.getVote();

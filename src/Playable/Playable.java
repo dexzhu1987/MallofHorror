@@ -110,12 +110,15 @@ public class Playable {
         charactersselect.remove(q);
     }
 
+    
 
 
     @Override
     public String toString() {
        return  "Player " + color + ": " + name;
     }
+
+
 
     public static void main(String[] args) {
         Playable p1 = new Player();

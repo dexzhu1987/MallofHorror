@@ -1,11 +1,14 @@
 package Character;
 
 
+import Playable.Playable;
+
 public abstract class GameCharacter {
-    String name;
-    int points;
-    int strength;
-    int vote;
+    private String name;
+    private int points;
+    private int strength;
+    private int vote;
+    private Playable owner;
 
 
     public GameCharacter(String name, int points, int strength, int vote) {
@@ -13,6 +16,7 @@ public abstract class GameCharacter {
         this.points = points;
         this.strength = strength;
         this.vote = vote;
+        owner = new Playable() ;
     }
 
 //    public int vote (){
@@ -39,5 +43,13 @@ public abstract class GameCharacter {
     @Override
     public String toString() {
         return name;
+    }
+
+    public Playable getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Playable owner) {
+        this.owner = owner;
     }
 }
