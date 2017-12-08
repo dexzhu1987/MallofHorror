@@ -75,7 +75,7 @@ public class Game {
                         System.out.println(precharselect + " will go to Room number? (Either " + pairofDice.getDieOneFace()
                                 + " or " + pairofDice.getDieTwoFace() + ")");
                         preroomselect = input.nextInt();
-                        if (preroomselect != pairofDice.getDieOneFace() || preroomselect != pairofDice.getDieTwoFace()) {
+                        if (preroomselect != pairofDice.getDieOneFace() && preroomselect != pairofDice.getDieTwoFace()) {
                             System.out.println("Please select either " + pairofDice.getDieOneFace()+
                                     " or " + pairofDice.getDieTwoFace() );
                         }

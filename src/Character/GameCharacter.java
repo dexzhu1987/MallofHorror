@@ -1,10 +1,12 @@
 package Character;
 
+
 public abstract class GameCharacter {
     String name;
     int points;
     int strength;
     int vote;
+
 
     public GameCharacter(String name, int points, int strength, int vote) {
         this.name = name;
@@ -13,10 +15,10 @@ public abstract class GameCharacter {
         this.vote = vote;
     }
 
-    public int vote (){
-        int votesum=0;
-        return votesum;
-    }
+//    public int vote (){
+//        int votesum = 0;
+//        return votesum += getVote();
+//    }
 
     public String getName() {
         return name;
