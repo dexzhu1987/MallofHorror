@@ -3,7 +3,7 @@ package Room;
 import Item.Item;
 
 public class Parking extends Room {
-    public Parking(int roomNum, String name, int capability) {
+    public Parking() {
         super(4, "Parking", 99);
     }
 

@@ -1,7 +1,7 @@
 package Room;
 
-public class SecurityRoom extends Room {
-    public SecurityRoom() {
+public class SecurityHQ extends Room {
+    public SecurityHQ() {
         super(5, "Security HQ", 3);
     }
 

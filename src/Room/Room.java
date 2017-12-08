@@ -14,4 +14,17 @@ public abstract class Room {
     public boolean defend(){
         return true;
     }
+
+
+    public int getRoomNum() {
+        return roomNum;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCapability() {
+        return capability;
+    }
 }
