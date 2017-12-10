@@ -2,12 +2,14 @@ package Playable;
 
 import java.util.*;
 import Character.*;
+import Item.*;
 
 public class Playable {
     protected String name;
     protected String color;
     List<GameCharacter> characters;
     List<GameCharacter> charactersselect;
+    List<Item> currentItem;
 
     public Playable() {
         name = "";
@@ -22,6 +24,8 @@ public class Playable {
         charactersselect.add(new GunMan());
         charactersselect.add(new ToughGuy());
         charactersselect.add(new Model());
+
+        currentItem = new ArrayList<Item>();
     }
 
     public String getName() {
@@ -110,7 +114,87 @@ public class Playable {
         charactersselect.remove(q);
     }
 
+    public void getItem(Item item){
+        currentItem.add(item);
+    }
 
+    public void usedItem(int itemNum){
+        int q = 0;
+        for (int i=0; i<currentItem.size(); i++){
+           if (itemNum == currentItem.get(i).getItemNum()) {
+               q = i;
+           }
+        }
+        currentItem.remove(q);
+    }
+
+    public List<Item> getCurrentItem() {
+        return currentItem;
+    }
+
+    public boolean hasItem(){
+        return currentItem.size()==0;
+    }
+
+    public boolean hasThreat(){
+        String threat = "Threat";
+        for (int i=0; i<currentItem.size(); i++){
+            if (threat.equalsIgnoreCase(currentItem.get(i).getName())) {
+               return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasSecurityCamera(){
+        String itemName = "SecurityCamera";
+        for (int i=0; i<currentItem.size(); i++){
+            if (itemName.equalsIgnoreCase(currentItem.get(i).getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasOthersItems(){
+        String itemName = "ShotGun";
+        String itemName1 = "Sprint";
+        String itemName2 = "Axe";
+        String itemName3 = "Hareware";
+        String itemName4 = "Hidden";
+
+        for (int i=0; i<currentItem.size(); i++){
+
+            if (itemName.equalsIgnoreCase(currentItem.get(i).getName())||itemName1.equalsIgnoreCase(currentItem.get(i).getName())
+                    ||itemName2.equalsIgnoreCase(currentItem.get(i).getName())||itemName3.equalsIgnoreCase(currentItem.get(i).getName())||
+                    itemName4.equalsIgnoreCase(currentItem.get(i).getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int threatNum(){
+        String item = "Threat";
+        int count=0;
+        for (int i=0; i<currentItem.size(); i++){
+            if (item.equalsIgnoreCase(currentItem.get(i).getName())) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int securityCameraNum(){
+        String item = "SecurityCamera";
+        int count=0;
+        for (int i=0; i<currentItem.size(); i++){
+            if (item.equalsIgnoreCase(currentItem.get(i).getName())) {
+                count++;
+            }
+        }
+        return count;
+    }
 
 
     @Override
@@ -136,6 +220,16 @@ public class Playable {
         System.out.println(p1.getCharactersselect());
         p1.selectchooseremove("Model");
         System.out.println(p1.getCharactersselect());
+
+        p1.getItem(new ShotGun());
+        p1.getItem(new Threat());
+        p1.getItem(new Threat());
+        p1.getItem(new SecurityCamera());
+        System.out.println(p1.getCurrentItem());
+        System.out.println(p1.hasOthersItems());
+        System.out.println(p1.threatNum());
+        System.out.println(p1.securityCameraNum());
+
     }
 
 

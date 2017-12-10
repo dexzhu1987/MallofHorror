@@ -44,6 +44,7 @@ public class GameBroad {
 
     itemDeck = new ItemDeck();
 
+
   }
 
     public List<Room> getRooms() {
@@ -76,11 +77,22 @@ public class GameBroad {
       return rooms.get(q);
     }
 
+    public Playable matchPlayer(String color){
+        int q = 0;
+        for (int i=0; i<players.size(); i++){
+            if (color.equalsIgnoreCase(players.get(i).getColor())){
+                q = i;
+            }
+        }
+        return players.get(q);
+    }
+
     public void printRooms(){
         for (int i=0; i<rooms.size(); i++){
             System.out.println(rooms.get(i));
         }
     }
+
 
     public HashSet<Playable> WhoCan(HashSet<String> existCharacterColors){
         HashSet<Playable> voteplayers = new HashSet<Playable>();
@@ -94,6 +106,17 @@ public class GameBroad {
         return  voteplayers;
     }
 
+    public HashSet<Playable> RemainPlayers(Playable winnerplayer){
+        HashSet<Playable> remainplayers = new HashSet<>();
+
+            for (int q = 0; q < players.size(); q++) {
+                if (!winnerplayer.getColor().contains(players.get(q).getColor())) {
+                    remainplayers.add(players.get(q));
+                }
+
+        }
+        return  remainplayers;
+    }
 
 
 }
