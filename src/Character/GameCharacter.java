@@ -8,7 +8,7 @@ public abstract class GameCharacter {
     private int points;
     private int strength;
     private int vote;
-    private Playable owner;
+    private String ownercolor;
 
 
     public GameCharacter(String name, int points, int strength, int vote) {
@@ -16,7 +16,7 @@ public abstract class GameCharacter {
         this.points = points;
         this.strength = strength;
         this.vote = vote;
-        owner = new Playable() ;
+        ownercolor = "" ;
     }
 
 //    public int vote (){
@@ -41,15 +41,39 @@ public abstract class GameCharacter {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GameCharacter that = (GameCharacter) o;
+
+        if (points != that.points) return false;
+        if (strength != that.strength) return false;
+        if (vote != that.vote) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        return ownercolor != null ? ownercolor.equals(that.ownercolor) : that.ownercolor == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + points;
+        result = 31 * result + strength;
+        result = 31 * result + vote;
+        result = 31 * result + (ownercolor != null ? ownercolor.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
-        return name;
+        return ownercolor + " " +  name ;
     }
 
-    public Playable getOwner() {
-        return owner;
+    public String getOwnercolor() {
+        return ownercolor;
     }
 
-    public void setOwner(Playable owner) {
-        this.owner = owner;
+    public void setOwnercolor(String ownercolor) {
+        this.ownercolor = ownercolor;
     }
 }

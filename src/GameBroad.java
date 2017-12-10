@@ -2,10 +2,8 @@ import Dice.PairofDice;
 import Item.*;
 import Playable.*;
 import Room.*;
-
-import java.awt.*;
 import java.util.*;
-import java.util.List;
+
 
 public class GameBroad {
   private List<Room> rooms;
@@ -37,6 +35,10 @@ public class GameBroad {
     players = new ArrayList<>();
     for (int i=0; i<numplayer; i++){
         players.add(totalPlayerslist[i]);
+        for (int q=0; q<players.get(i).getGameCharacters().size(); q++){
+            players.get(i).getGameCharacters().get(q).setOwnercolor(players.get(i).getColor());
+            players.get(i).getCharactersselect().get(q).setOwnercolor(players.get(i).getColor());
+        }
     }
 
 
@@ -79,5 +81,19 @@ public class GameBroad {
             System.out.println(rooms.get(i));
         }
     }
+
+    public HashSet<Playable> WhoCan(HashSet<String> existCharacterColors){
+        HashSet<Playable> voteplayers = new HashSet<Playable>();
+        for (String existCharacterColor: existCharacterColors) {
+            for (int q = 0; q < players.size(); q++) {
+                if (existCharacterColor.contains(players.get(q).getColor())) {
+                    voteplayers.add(players.get(q));
+                }
+            }
+        }
+        return  voteplayers;
+    }
+
+
 
 }

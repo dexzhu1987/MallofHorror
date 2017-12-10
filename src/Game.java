@@ -3,6 +3,9 @@ import Playable.Playable;
 import Playable.Player;
 import Room.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
@@ -114,7 +117,7 @@ public class Game {
                 while (preroomselect != pairofDice.getDieOneFace() && preroomselect != pairofDice.getDieTwoFace());
 
             if (gameBroad.matchRoom(preroomselect).isFull()){
-                gameBroad.getRooms().get(3).enter(gameBroad.getPlayers().get(q).selectchoose(precharselect));
+                gameBroad.matchRoom(4).enter(gameBroad.getPlayers().get(q).selectchoose(precharselect));
                 gameBroad.getPlayers().get(q).selectchooseremove(precharselect);
             }
             else{
@@ -125,19 +128,70 @@ public class Game {
         }
 
         gameBroad.printRooms();
+        System.out.println();
+        //-------------------pregame --select room phase ends---------------------------------
+        //---------------------gamephase-----------------------------
+//        while (gameBroad.totalCharatersRemain()>4){
+        // -----------parking serch--------------------------
+        if (gameBroad.matchRoom(4).isEmpty()){
+            System.out.println("Due to Parking is empty, no searching will be performed");
+        }
+        else {
+            HashSet<Playable> searchteam = new HashSet<>();
+            searchteam = gameBroad.WhoCan(gameBroad.matchRoom(4).existCharacterColor());
+            for (Playable teammember: searchteam){
+                System.out.print(teammember + ", ");
+            }
+            System.out.println(" please vote who can search");
+            List<String> votes = new ArrayList<>();
+            String vote = "";
+            for (Playable teammember: searchteam){
+                do {
+                    Scanner input = new Scanner(System.in);
+                    System.out.println(teammember + " please vote color in the list:" + searchteam );
+                    vote=input.nextLine();
+                    if (!votecorrectselect(searchteam,vote)){
+                        System.out.println("Please select correct color.");
+                    }
+                    else {
+                        votes.add(vote);
+                    }
+                }
+                while (!votecorrectselect(searchteam,vote));
+            }
+
+
+        }
 
 
 
-    }
+
+
+
+
+        }
+
+
+
+
+//    }
 
     public static boolean charactercorrectselect(Playable player, String selectchar){
         for (int i=0; i<player.getCharactersselect().size(); i++){
             if (selectchar.equalsIgnoreCase(player.getCharactersselect().get(i).getName())){
                 return true;
             }
-
         }
       return false;
+    }
+
+    public static boolean votecorrectselect(HashSet<Playable> voteplayerlist, String votecolor){
+        for (Playable player: voteplayerlist){
+            if (votecolor.equalsIgnoreCase(player.getColor())){
+                return true;
+            }
+        }
+        return false;
     }
 
 

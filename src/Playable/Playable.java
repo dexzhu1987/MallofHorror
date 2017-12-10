@@ -110,7 +110,7 @@ public class Playable {
         charactersselect.remove(q);
     }
 
-    
+
 
 
     @Override
