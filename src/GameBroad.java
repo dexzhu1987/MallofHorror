@@ -154,13 +154,19 @@ public class GameBroad {
            if (maxPeople<rooms.get(i).getRoomCharaters().size()){
                maxPeople = rooms.get(i).getRoomCharaters().size();
                q = i;
-               count++;
            }
+        }
+        for (int i=0; i<rooms.size(); i++){
+            if (maxPeople==rooms.get(i).getRoomCharaters().size()){
+                count++;
+            }
         }
         if (count>1){
             return extraZombiesPlace;
+        } else {
+            return rooms.get(q);
         }
-        return rooms.get(q);
+
     }
 
     public Room mostModel(){
@@ -171,15 +177,39 @@ public class GameBroad {
             if (maxPeople<rooms.get(i).modelNumber()){
                 maxPeople = rooms.get(i).modelNumber();
                 q = i;
+            }
+        }
+        for (int i=0; i<rooms.size(); i++){
+            if (maxPeople==rooms.get(i).modelNumber()){
                 count++;
             }
         }
         if (count>1){
             return extraZombiesPlace;
+        } else {
+            return rooms.get(q);
         }
-        return rooms.get(q);
+
     }
 
 
+    public static void main(String[] args) {
+        GameBroad gameBroad = new GameBroad(2);
+
+        gameBroad.getRooms().get(0).enter(new Model());
+        gameBroad.getRooms().get(1).enter(new Model());
+        gameBroad.getRooms().get(1).enter(new Model());
+        gameBroad.getRooms().get(1).enter(new Model());
+        gameBroad.getRooms().get(2).enter(new Model());
+        gameBroad.getRooms().get(2).enter(new ToughGuy());
+        gameBroad.getRooms().get(2).enter(new ToughGuy());
+
+        gameBroad.printRooms();
+
+        System.out.println(gameBroad.mostPeople().getName());
+        System.out.println(gameBroad.mostModel().getName());
+
+
+    }
 
 }
