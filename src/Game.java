@@ -6,6 +6,7 @@ import Room.*;
 import Character.*;
 
 
+
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -451,6 +452,7 @@ public class Game {
                 while (loop || (startplayerroomnumber < 0 || startplayerroomnumber > 6));
             } else {
                 String winnercolor = gameBroad.matchRoom(currentVotingRoomNumber).winner();
+                System.out.println("Voting Result: " + gameBroad.matchRoom(currentVotingRoomNumber).getCurrentVoteResult());
                 System.out.println("Winner is " + gameBroad.matchPlayer(winnercolor));
                 startplayer = gameBroad.getPlayers().indexOf(gameBroad.matchPlayer(winnercolor));
                 String ok = "";
@@ -514,9 +516,14 @@ public class Game {
             }
             //-------------------------chief select and camera viewing ends------------------------
             //----------------------other 5 player choosing their desination---------------------
-            System.out.println();
-            gameBroad.printRooms();
-            System.out.println();
+
+            if (!gameBroad.matchRoom(5).winner().equals("TIE") || !gameBroad.matchRoom(5).isEmpty() ){
+                System.out.println("----------------Other players choosing destination phase------------");
+                gameBroad.printRooms();
+                System.out.println();
+                System.out.println("After reviewing the monitor, the chief will go to Room " + startplayerroomnumber);
+
+            }
 
             List<Integer> roomspicked = new ArrayList<>();
             //first half of players
@@ -666,6 +673,74 @@ public class Game {
         System.out.println("---------------Moving Ends------------------");
         gameBroad.printRooms();
         System.out.println();
+
+        System.out.println("---------------Zombie Apprears------------------");
+        System.out.println("Zombies will be approaching rooms ");
+        System.out.println("Dices result" + dices);
+        System.out.println("Each number means the correspoding room will have one zombie");
+        System.out.println("As a result, zomebie are entering");
+        for (int dice: dices){
+            gameBroad.matchRoom(dice).zombieApproached();
+            System.out.println("A zombie has approached " + gameBroad.matchRoom(dice).getName() );
+        }
+        System.out.println();
+        System.out.println("For the room with most people, one more zombie will attracted to there (they can smell the flesh)");
+        if (gameBroad.mostPeople().getRoomNum()==7){
+            System.out.println("Result is TIE, no zombie will be attacted");
+        }
+        else {
+            gameBroad.mostPeople().zombieApproached();
+            System.out.println("As a result, one zombie has approached " + gameBroad.mostPeople().getName());
+        }
+        System.out.println("For the room with most models (they are more likely to scream), one more zombie will attracted to there");
+        if (gameBroad.mostModel().getRoomNum()==7){
+            System.out.println("Result is TIE, no zombie will be attacted");
+        }
+        else {
+            gameBroad.mostModel().zombieApproached();
+            System.out.println("As a result, one zombie has approached " + gameBroad.mostModel().getName());
+        }
+        String ok = "";
+        do {
+            Scanner input = new Scanner(System.in);
+            System.out.println("Please type OK to move to the next step");
+            ok = input.nextLine();
+        }
+        while (!ok.equalsIgnoreCase("ok"));
+        gameBroad.printRooms();
+        System.out.println();
+        System.out.println("-------------------Zombies approached phase ends---------------------");
+        gameBroad.printRooms();
+        System.out.println();
+        System.out.println("--------------------Zombies attacked ----------------------");
+        System.out.println("For each room, when characters' strength is less than zombies number, zombies attacked successfully.");
+        System.out.println("If zombies attacked successfully, one character will be eaten by the zombies");
+        System.out.println("Note: Parking has no defends, so as long as there is zombies there, one character will be eaten");
+        System.out.println("Note: Supermarket has too many entraces (weak defends), so as long as there are more than four zombies there, one character will be eaten (less than four: the same rule as the other room");
+        String ok1 = "";
+        do {
+            Scanner input = new Scanner(System.in);
+            System.out.println("If you have understood, please type OK to move to the next step");
+            ok1 = input.nextLine();
+        }
+        while (!ok1.equalsIgnoreCase("ok"));
+        gameBroad.printRooms();
+        System.out.println();
+
+        for (int i=0; i<gameBroad.getRooms().size(); i++){
+           if (gameBroad.getRooms().get(i).isFallen()) {
+               Room fallenRoom = gameBroad.getRooms().get(i);
+               System.out.println(fallenRoom.getName() + " has fallen, one character will be eaten");
+
+
+
+
+
+           }
+        }
+
+
+
 
         }
 

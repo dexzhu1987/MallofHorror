@@ -11,6 +11,7 @@ public class GameBroad {
   private List<Playable> players;
   private ItemDeck itemDeck;
   private Playable[] totalPlayerslist;
+  private Room extraZombiesPlace;
 
 
   public GameBroad(int numplayer) {
@@ -21,6 +22,8 @@ public class GameBroad {
     rooms.add(new Parking());
     rooms.add(new SecurityHQ());
     rooms.add(new Supermarket());
+
+    extraZombiesPlace = new ZombiesWonderingPlace();
 
     totalPlayerslist = new Playable[6];
     for (int i=0; i<totalPlayerslist.length; i++){
@@ -137,6 +140,44 @@ public class GameBroad {
 
         }
         return  remainplayers;
+    }
+
+    /**
+     * return the room that with the most Gamecharacter
+     * @return the room with most people
+     */
+    public Room mostPeople(){
+        int q=0;
+        int maxPeople = rooms.get(0).getRoomCharaters().size();
+        int count = 0;
+        for (int i=0; i<rooms.size(); i++){
+           if (maxPeople<rooms.get(i).getRoomCharaters().size()){
+               maxPeople = rooms.get(i).getRoomCharaters().size();
+               q = i;
+               count++;
+           }
+        }
+        if (count>1){
+            return extraZombiesPlace;
+        }
+        return rooms.get(q);
+    }
+
+    public Room mostModel(){
+        int q=0;
+        int maxPeople = rooms.get(0).modelNumber();
+        int count = 0;
+        for (int i=0; i<rooms.size(); i++){
+            if (maxPeople<rooms.get(i).modelNumber()){
+                maxPeople = rooms.get(i).modelNumber();
+                q = i;
+                count++;
+            }
+        }
+        if (count>1){
+            return extraZombiesPlace;
+        }
+        return rooms.get(q);
     }
 
 

@@ -11,6 +11,7 @@ public abstract class Room {
     protected int capability;
     protected List<GameCharacter> roomCharaters;
     protected HashMap<String, Integer> currentVoteResult;
+    protected int currentZombienumber;
 
     public Room(int roomNum, String name, int capability) {
         this.roomNum = roomNum;
@@ -18,10 +19,7 @@ public abstract class Room {
         this.capability = capability;
         roomCharaters = new ArrayList<>();
         currentVoteResult = new HashMap<>();
-    }
-
-    public boolean defend(){
-        return true;
+        currentZombienumber = 0;
     }
 
     public int getRoomNum() {
@@ -69,7 +67,26 @@ public abstract class Room {
         return roomCharaters.size()==0;
     }
 
-
+    /**
+     * if the room has enough strength to defend the zombies
+     * @return whether the room has fallen, if it is (true), the zombies will attack
+     */
+    public boolean isFallen(){
+        if (roomCharaters.size()>0) {
+            int defend = 0;
+            for (GameCharacter character : roomCharaters) {
+                defend += character.getStrength();
+            }
+            if (currentZombienumber > defend) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
 
     public HashSet<String> existCharacterColor(){
         HashSet<String> existCharacterColor = new HashSet<>();
@@ -87,6 +104,24 @@ public abstract class Room {
            }
         }
         return false;
+    }
+
+    /**
+     * count how many models in the room
+     * @return the number of the model in the room
+     */
+    public int modelNumber(){
+        int modelNumber = 0;
+        for (GameCharacter character: roomCharaters){
+            if (character.getName().equalsIgnoreCase("Model")){
+                modelNumber++;
+            }
+        }
+        return modelNumber;
+    }
+
+    public void zombieApproached(){
+        currentZombienumber++;
     }
 
     /**
@@ -170,43 +205,56 @@ public abstract class Room {
 
     @Override
     public String toString() {
-        return name + " has " + roomCharaters ;
+        String spaces="";
+        for (int i=0; i<80-(roomCharaters.toString().length()+ name.length()); i++){
+            spaces+=" ";
+        }
+        return name + " has " + roomCharaters + spaces + "Current Zombies number: " + currentZombienumber;
     }
 
 
     public static void main(String[] args) {
-        Room r1=new Parking();
+        Room r1=new Supermarket();
         GameCharacter c1=new Model();
         GameCharacter c2=new GunMan();
         GameCharacter c3=new ToughGuy();
         GameCharacter c4=new GunMan();
-        GameCharacter c5=new Model();
+//        GameCharacter c5=new Model();
         c1.setOwnercolor("RED");
         c2.setOwnercolor("YELLOW");
         c3.setOwnercolor("YELLOW");
         c4.setOwnercolor("YELLOW");
-        c5.setOwnercolor("YELLOW");
+//        c5.setOwnercolor("YELLOW");
         r1.enter(c1);
         r1.enter(c2);
         r1.enter(c3);
         r1.enter(c4);
-        r1.enter(c5);
+//        r1.enter(c5);
         System.out.println(r1);
-        r1.resetVoteResult();
-        System.out.println(r1.getCurrentVoteResult());
-        List<String> votes = new ArrayList<>();
-        votes.add("RED");
-        votes.add("RED");
-        votes.add("RED");
-        votes.add("red");
-        votes.add("RED");
-        votes.add("RED");
-        r1.voteResultAfterVote(votes);
-        System.out.println(r1.getCurrentVoteResult());
-        System.out.println(r1.winner());
-        r1.voteResultAfterItem("red",3);
-        r1.voteResultAfterItem("YELLOW",2);
-        System.out.println(r1.getCurrentVoteResult());
-        System.out.println(r1.winner());
+//        r1.resetVoteResult();
+//        System.out.println(r1.getCurrentVoteResult());
+//        List<String> votes = new ArrayList<>();
+//        votes.add("RED");
+//        votes.add("RED");
+//        votes.add("RED");
+//        votes.add("red");
+//        votes.add("RED");
+//        votes.add("RED");
+//        r1.voteResultAfterVote(votes);
+//        System.out.println(r1.getCurrentVoteResult());
+//        System.out.println(r1.winner());
+//        r1.voteResultAfterItem("red",3);
+//        r1.voteResultAfterItem("YELLOW",2);
+//        System.out.println(r1.getCurrentVoteResult());
+//        System.out.println(r1.winner());
+//        System.out.println(r1.modelNumber());
+        r1.zombieApproached();
+        r1.zombieApproached();
+        r1.zombieApproached();
+        r1.zombieApproached();
+
+
+        System.out.println(r1);
+        System.out.println(r1.isFallen());
     }
 }
