@@ -36,6 +36,10 @@ public abstract class Room {
         return capability;
     }
 
+    public List<GameCharacter> getRoomCharaters() {
+        return roomCharaters;
+    }
+
     public void enter(GameCharacter character){
         roomCharaters.add(character);
     }
@@ -65,12 +69,24 @@ public abstract class Room {
         return roomCharaters.size()==0;
     }
 
+
+
     public HashSet<String> existCharacterColor(){
         HashSet<String> existCharacterColor = new HashSet<>();
-        for (int i=0; i<roomCharaters.size(); i++){
+       for (int i=0; i<roomCharaters.size(); i++){
             existCharacterColor.add(roomCharaters.get(i).getOwnercolor());
         }
+
         return existCharacterColor;
+    }
+
+    public boolean inTheRoom(GameCharacter character){
+        for (int i=0; i<roomCharaters.size(); i++){
+           if(character.equals(roomCharaters.get(i))){
+               return true;
+           }
+        }
+        return false;
     }
 
     /**
@@ -82,7 +98,7 @@ public abstract class Room {
         for (int i=0; i<roomCharaters.size(); i++){
                     votesum=roomCharaters.get(i).getVote();
                     for (int q = i+1; q<roomCharaters.size(); q++){
-                        if (roomCharaters.get(q).getOwnercolor().equals(roomCharaters.get(i).getOwnercolor())){
+                        if (roomCharaters.get(q).getOwnercolor().equalsIgnoreCase(roomCharaters.get(i).getOwnercolor())){
                             votesum+=roomCharaters.get(q).getVote();
                         }
                     }
@@ -119,8 +135,8 @@ public abstract class Room {
      * @param increaseNum
      */
     public void voteResultAfterItem(String color, int increaseNum){
-        int originalvote = currentVoteResult.get(color);
-        int newvote=originalvote + increaseNum;
+        int originalvote = currentVoteResult.get(color.toUpperCase());
+        int newvote = originalvote + increaseNum;
         currentVoteResult.replace(color,newvote);
 
     }
@@ -181,14 +197,14 @@ public abstract class Room {
         List<String> votes = new ArrayList<>();
         votes.add("RED");
         votes.add("RED");
-        votes.add("YELLOW");
         votes.add("RED");
+        votes.add("red");
         votes.add("RED");
         votes.add("RED");
         r1.voteResultAfterVote(votes);
         System.out.println(r1.getCurrentVoteResult());
         System.out.println(r1.winner());
-        r1.voteResultAfterItem("RED",3);
+        r1.voteResultAfterItem("red",3);
         r1.voteResultAfterItem("YELLOW",2);
         System.out.println(r1.getCurrentVoteResult());
         System.out.println(r1.winner());

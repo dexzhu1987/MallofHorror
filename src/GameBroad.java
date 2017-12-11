@@ -3,6 +3,7 @@ import Item.*;
 import Playable.*;
 import Room.*;
 import java.util.*;
+import Character.*;
 
 
 public class GameBroad {
@@ -87,12 +88,32 @@ public class GameBroad {
         return players.get(q);
     }
 
+    public GameCharacter matchGameCharacter(Playable player, String gameCharacter){
+       int q = 0;
+       for (int i=0; i<player.getGameCharacters().size(); i++){
+           if (gameCharacter.equalsIgnoreCase(player.getGameCharacters().get(i).getName())){
+               q = i;
+           }
+       }
+       return player.getGameCharacters().get(q);
+    }
+
+    public Room inWhichRoom (GameCharacter character){
+        int k=0;
+        for (int i=0; i<rooms.size(); i++){
+            for (int q=0; q<rooms.get(i).getRoomCharaters().size();q++)
+            if (character.equals(rooms.get(i).getRoomCharaters().get(q))){
+               k=i;
+            }
+        }
+        return rooms.get(k);
+    }
+
     public void printRooms(){
         for (int i=0; i<rooms.size(); i++){
             System.out.println(rooms.get(i));
         }
     }
-
 
     public HashSet<Playable> WhoCan(HashSet<String> existCharacterColors){
         HashSet<Playable> voteplayers = new HashSet<Playable>();
@@ -117,6 +138,7 @@ public class GameBroad {
         }
         return  remainplayers;
     }
+
 
 
 }

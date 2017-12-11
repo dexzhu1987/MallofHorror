@@ -41,30 +41,6 @@ public abstract class GameCharacter {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        GameCharacter that = (GameCharacter) o;
-
-        if (points != that.points) return false;
-        if (strength != that.strength) return false;
-        if (vote != that.vote) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return ownercolor != null ? ownercolor.equals(that.ownercolor) : that.ownercolor == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + points;
-        result = 31 * result + strength;
-        result = 31 * result + vote;
-        result = 31 * result + (ownercolor != null ? ownercolor.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return ownercolor + " " +  name ;
     }
@@ -75,5 +51,30 @@ public abstract class GameCharacter {
 
     public void setOwnercolor(String ownercolor) {
         this.ownercolor = ownercolor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GameCharacter that = (GameCharacter) o;
+
+        if (this.ownercolor.equalsIgnoreCase(that.ownercolor)&& this.name.equalsIgnoreCase(that.name)){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + points;
+        result = 31 * result + strength;
+        result = 31 * result + vote;
+        result = 31 * result + (ownercolor != null ? ownercolor.hashCode() : 0);
+        return result;
     }
 }
