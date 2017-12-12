@@ -2,7 +2,7 @@ package Room;
 
 import java.util.*;
 import Character.*;
-import Playable.Player;
+import Playable.*;
 
 
 public abstract class Room {
@@ -97,6 +97,16 @@ public abstract class Room {
         return existCharacterColor;
     }
 
+    public HashSet<GameCharacter> existChracterForThatPlayer(Playable player){
+        HashSet<GameCharacter> existedCharacters = new HashSet<>();
+        for (GameCharacter character: roomCharaters){
+            if (character.getOwnercolor().equalsIgnoreCase(player.getColor())){
+                existedCharacters.add(character);
+            }
+        }
+        return existedCharacters;
+    }
+
     public boolean inTheRoom(GameCharacter character){
         for (int i=0; i<roomCharaters.size(); i++){
            if(character.equals(roomCharaters.get(i))){
@@ -124,9 +134,18 @@ public abstract class Room {
         currentZombienumber++;
     }
 
+    public void zombieKilled(){
+        currentZombienumber--;
+    }
+
+    public int getCurrentZombienumber() {
+        return currentZombienumber;
+    }
+
     /**
      * method set the vote result using the potential votes in the room
      */
+
     public void  resetVoteResult(){
         HashMap<String, Integer> potentialVoteForEachColor = new HashMap<>();
         int votesum=0;

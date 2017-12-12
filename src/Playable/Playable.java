@@ -26,6 +26,7 @@ public class Playable {
         charactersselect.add(new Model());
 
         currentItem = new ArrayList<Item>();
+
     }
 
     public String getName() {
@@ -118,14 +119,8 @@ public class Playable {
         currentItem.add(item);
     }
 
-    public void usedItem(int itemNum){
-        int q = 0;
-        for (int i=0; i<currentItem.size(); i++){
-           if (itemNum == currentItem.get(i).getItemNum()) {
-               q = i;
-           }
-        }
-        currentItem.remove(q);
+    public void usedItem(Item item){
+       currentItem.remove(item);
     }
 
     public List<Item> getCurrentItem() {
@@ -157,7 +152,7 @@ public class Playable {
     }
 
     public boolean hasOthersItems(){
-        String itemName = "ShotGun";
+        String itemName =  "ShotGun";
         String itemName1 = "Sprint";
         String itemName2 = "Axe";
         String itemName3 = "Hareware";
@@ -172,6 +167,16 @@ public class Playable {
             }
         }
         return false;
+    }
+
+    public List<Item> otherItemsList(){
+        List<Item> otherItemList = new ArrayList<>();
+        for (Item item: currentItem){
+            if (!item.getName().equalsIgnoreCase("SecurityCamera") && !item.getName().equalsIgnoreCase("Threat")){
+                otherItemList.add(item);
+            }
+        }
+        return otherItemList;
     }
 
     public int threatNum(){
@@ -208,27 +213,30 @@ public class Playable {
         Playable p1 = new Player();
         System.out.println( p1.choose("Gunman"));
         p1.chardeath("Tough guy");
-        System.out.println(p1.remaingCharacter());
-        System.out.println(p1.getGameCharacters());
-
-        System.out.println();
-        System.out.println(p1.selectchoose("Model"));
-        System.out.println(p1.getCharactersselect());
-        p1.selectchooseremove("Gun Man");
-        System.out.println(p1.getCharactersselect());
-        p1.selectchooseremove("Tough Guy");
-        System.out.println(p1.getCharactersselect());
-        p1.selectchooseremove("Model");
-        System.out.println(p1.getCharactersselect());
+//        System.out.println(p1.remaingCharacter());
+//        System.out.println(p1.getGameCharacters());
+//
+//        System.out.println();
+//        System.out.println(p1.selectchoose("Model"));
+//        System.out.println(p1.getCharactersselect());
+//        p1.selectchooseremove("Gun Man");
+//        System.out.println(p1.getCharactersselect());
+//        p1.selectchooseremove("Tough Guy");
+//        System.out.println(p1.getCharactersselect());
+//        p1.selectchooseremove("Model");
+//        System.out.println(p1.getCharactersselect());
 
         p1.getItem(new ShotGun());
         p1.getItem(new Threat());
         p1.getItem(new Threat());
         p1.getItem(new SecurityCamera());
+        p1.getItem(new Hardware());
+        p1.getItem(new Hidden());
         System.out.println(p1.getCurrentItem());
         System.out.println(p1.hasOthersItems());
         System.out.println(p1.threatNum());
         System.out.println(p1.securityCameraNum());
+        System.out.println(p1.otherItemsList());
 
     }
 

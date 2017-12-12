@@ -2,9 +2,11 @@ package Item;
 
 
 import java.util.*;
+import Character.*;
 
 public class ItemDeck  {
     private List<Item> itemsDeck;
+
 
     public ItemDeck() {
         itemsDeck = new ArrayList<>();
@@ -30,11 +32,14 @@ public class ItemDeck  {
             itemsDeck.add(new Hidden());
         }
 
+
+
     }
 
     public List<Item> getItemsDeck() {
         return itemsDeck;
     }
+
 
     protected void printItemDeck(){
         for (Item item: itemsDeck){

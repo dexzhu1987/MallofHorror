@@ -10,7 +10,7 @@ import Character.*;
 import java.lang.reflect.Array;
 import java.util.*;
 
-public class Game {
+public class Game { // test
     public static void main(String[] args) {
 
         //deciding how many players phase;
@@ -138,7 +138,10 @@ public class Game {
         gameBroad.getItemDeck().shuffle();
         for (int i=0; i<gameBroad.getPlayers().size(); i++)
         {
-            gameBroad.getPlayers().get(i).getItem(gameBroad.getItemDeck().deal());
+            Item starterItem = gameBroad.getItemDeck().deal();
+            gameBroad.getPlayers().get(i).getItem(starterItem);
+            System.out.println(gameBroad.getPlayers().get(i) + " received " + starterItem);
+            System.out.println();
         }
 
         //---------------------gamephase-----------------------------
@@ -491,25 +494,37 @@ public class Game {
                 System.out.println("After reviewing the monitor, the chief will go to Room " + startplayerroomnumber);
             }
             if (teamHasSecurityCamera(gameBroad.getPlayers())) {
-                for (Playable player : gameBroad.getPlayers()) {
-                    String yes = "";
-                    do {
-                        Scanner input = new Scanner(System.in);
-                        System.out.println(player + " please confirm you want to use your SecurityCamera Item to view the result(y/n)");
-                        System.out.println("Your item list:" + player.getCurrentItem());
-                        yes = input.nextLine();
-                        if (!yes.equalsIgnoreCase("n") && !yes.equalsIgnoreCase("y")) {
-                            System.out.println("Please enter y or n");
-                        }
+                String yes = "";
+                do {
+                    Scanner input = new Scanner(System.in);
+                    System.out.println("The results can be viewed by using item SecurityCamera, anyone want to use Security Camera?(y/n)");
+                    yes = input.nextLine();
+                    if (!yes.equalsIgnoreCase("n") && !yes.equalsIgnoreCase("y")) {
+                        System.out.println("Please enter y or n");
                     }
-                    while (!yes.equalsIgnoreCase("n") && !yes.equalsIgnoreCase("y"));
-                    if (yes.equalsIgnoreCase("y")) {
-                        if (player.hasSecurityCamera()) {
-                            System.out.println("Zombies will be approaching rooms ");
-                            System.out.println(dices);
-                            System.out.println("Each number means the correspoding room will have one zombie");
-                        } else {
-                            System.out.println("You do not have a Security Camera");
+                }
+                while (!yes.equalsIgnoreCase("n") && !yes.equalsIgnoreCase("y"));
+                if (yes.equalsIgnoreCase("y")) {
+                    for (Playable player : gameBroad.getPlayers()) {
+                        String yes1 = "";
+                        do {
+                            Scanner input = new Scanner(System.in);
+                            System.out.println(player + " please confirm you want to use your SecurityCamera Item to view the result(y/n)");
+                            System.out.println("Your item list:" + player.getCurrentItem());
+                            yes1 = input.nextLine();
+                            if (!yes1.equalsIgnoreCase("n") && !yes1.equalsIgnoreCase("y")) {
+                                System.out.println("Please enter y or n");
+                            }
+                        }
+                        while (!yes1.equalsIgnoreCase("n") && !yes1.equalsIgnoreCase("y"));
+                        if (yes1.equalsIgnoreCase("y")) {
+                            if (player.hasSecurityCamera()) {
+                                System.out.println("Zombies will be approaching rooms ");
+                                System.out.println(dices);
+                                System.out.println("Each number means the correspoding room will have one zombie");
+                            } else {
+                                System.out.println("You do not have a Security Camera");
+                            }
                         }
                     }
                 }
@@ -727,18 +742,73 @@ public class Game {
         gameBroad.printRooms();
         System.out.println();
 
-        for (int i=0; i<gameBroad.getRooms().size(); i++){
-           if (gameBroad.getRooms().get(i).isFallen()) {
-               Room fallenRoom = gameBroad.getRooms().get(i);
-               System.out.println(fallenRoom.getName() + " has fallen, one character will be eaten");
+        for (int i=0; i<gameBroad.getRooms().size(); i++) {
+            if (gameBroad.getRooms().get(i).isFallen()) {
+
+                Room fallenRoom = gameBroad.getRooms().get(i);
+                HashSet<Playable> playersInTheRoom = gameBroad.WhoCan(fallenRoom.existCharacterColor());
+                System.out.println(fallenRoom.getName() + " has fallen, one character will be eaten");
+                if (teamHasOtherItems(playersInTheRoom)) {
+                    String yes = "";
+                    do {
+                        Scanner input = new Scanner(System.in);
+                        System.out.println("This result can change by using item, anyone in the room want to use Items?(y/n)");
+                        System.out.println("Items function descrip:tion:");
+                        System.out.println("Axe: kill one zombie");
+                        System.out.println("ShortGun: kill two zombies");
+                        System.out.println("Hardware: add one defend for a turn");
+                        System.out.println("Sprint: escape to the other room");
+                        System.out.println("Hidden: your character will not be killed nor can joined the voting");
+                        yes = input.nextLine();
+                        if (!yes.equalsIgnoreCase("n") && !yes.equalsIgnoreCase("y")) {
+                            System.out.println("Please enter y or n");
+                        }
+                    }
+                    while (!yes.equalsIgnoreCase("n") && !yes.equalsIgnoreCase("y"));
+                    if (yes.equalsIgnoreCase("y")) {
+                        for (Playable player: playersInTheRoom){
+                            if (player.hasOthersItems()){
+                                int itemselected = 0;
+                                boolean loop = false;
+                                do {
+                                    try {
+                                        loop =false;
+                                        Scanner input = new Scanner(System.in);
+                                        System.out.println("Please select which items you want to use" );
+                                        System.out.println("Your item list:" );
+                                        printTheListWithNumber((List<Object>)(Item)player.otherItemsList());
+                                        System.out.println("please type in ");
+                                        printTheOptions((List<Object>)(Item)player.otherItemsList());
+                                        itemselected = input.nextInt();
+                                        if (itemselected<0 || itemselected>player.otherItemsList().size()){
+                                            System.out.println("please type in ");
+                                            printTheOptions((List<Object>)(Item)player.otherItemsList());
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        System.out.println("Please enter a number");
+                                        loop = true;
+                                    }
+                                }
+                                while (loop || (itemselected<0 || itemselected>player.otherItemsList().size()));
+                                Item usedItem = player.otherItemsList().get(itemselected-1);
+                                player.usedItem(usedItem);
+
+
+
+                            }
 
 
 
 
 
-           }
+                        }
+                    }
+
+
+                }
+            }
         }
-
 
 
 
@@ -799,8 +869,39 @@ public class Game {
         return false;
     }
 
+    public static boolean teamHasOtherItems(HashSet<Playable> players){
+        for (Playable player: players){
+            if (player.hasOthersItems()){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    /**
+     * print the list in list form 1.xxx 2.yyyy 3........
+     * @param objects the list
+     */
 
+    public static void printTheListWithNumber(List<Object> objects){
+        int start = 1;
+        for (Object o: objects){
+            System.out.print(start + "." + o + ", ");
+        }
 
+    }
+
+    /**
+     * print the list option 1. 2. 3. ...........
+     * @param objects the list
+     */
+
+    public static void printTheOptions(List<Object> objects){
+        int start = 1;
+        for (Object o: objects){
+            System.out.print(start + ". ");
+        }
+
+    }
 
 }
