@@ -53,6 +53,14 @@ public class Playable {
         return characters;
     }
 
+    public int totalVictoryPoints (){
+        int sum = 0 ;
+        for (GameCharacter character: characters){
+            sum+=character.getPoints();
+        }
+        return sum;
+    }
+
     public GameCharacter choose(String charname) {
         int q = 0;
         for (int i = 0; i < characters.size(); i++) {

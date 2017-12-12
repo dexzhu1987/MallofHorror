@@ -61,6 +61,10 @@ public class GameBroad {
         return players;
     }
 
+    public void removePlayer(Playable player){
+      players.remove(player);
+    }
+
     public ItemDeck getItemDeck() {
         return itemDeck;
     }

@@ -143,8 +143,9 @@ public class Game { // test
         }
 
         //---------------------gamephase-----------------------------
-//        while (gameBroad.totalCharatersRemain()>4){
+        while (gameBroad.totalCharatersRemain()>4){
         // -----------parking search--------------------------
+            System.out.println("------------------------ Welcome to a new round -----------------");
         System.out.println("------------- Parking search begins ---------------------");
         gameBroad.printRooms();
         System.out.println();
@@ -349,6 +350,7 @@ public class Game { // test
                     if (!colorcorrectselect(team, vote)) {
                         System.out.println("Please select correct color.");
                     } else {
+                        votes.add(teammember.getColor());
                         votes.add(vote);
                     }
                 }
@@ -834,6 +836,7 @@ public class Game { // test
                                      System.out.println("Please select correct color.");
                                  }
                                  else {
+                                     votes.add(player.getColor());
                                      votes.add(vote);
                                  }
                              }
@@ -939,24 +942,43 @@ public class Game { // test
                         usedItemsList.clear();
                     }
             }
+            for (Playable player: gameBroad.getPlayers()){
+            if (player.remaingCharacter()==0){
+                System.out.println("Due to " + player + " has no more character, " + player + " has been removed from the Game Broad.");
+                gameBroad.removePlayer(player);
+            }
+            }
 
 
-
+        }
+        System.out.println("Current Character has now reached four, the game has reached an end");
+        int mostPoints = gameBroad.getPlayers().get(0).totalVictoryPoints();
+        int q = 0;
+        int count =0;
+        for (int i=0; i<gameBroad.getPlayers().size();i++){
+        if (mostPoints<gameBroad.getPlayers().get(i).totalVictoryPoints()){
+            mostPoints = gameBroad.getPlayers().get(i).totalVictoryPoints();
+            q = i;
+        }
+        }
+        for (Playable player: gameBroad.getPlayers()){
+            if(mostPoints == player.totalVictoryPoints()){
+                count++;
+            }
+        }
+        if (count>1){
+            System.out.println("Result is TIE, ");
+        }
+        else {
+            Playable winner  = gameBroad.getPlayers().get(q);
+            System.out.println("Congratulations! Winner is " + winner + " with a victory points" + mostPoints);
         }
 
 
 
+    }
 
 
-
-
-
-
-
-
-
-
-//    }
 
     public static boolean charactercorrectselect(Playable player, String selectchar){
         for (int i=0; i<player.getCharactersselect().size(); i++){

@@ -173,9 +173,9 @@ public abstract class Room {
 
         for (String color: existCharacterColor()){
             int votesum=0;
-         for (int q=0; q<votes.size(); q++)   {
+         for (int q=1; q<votes.size(); q+=2)   {
             if (color.equalsIgnoreCase(votes.get(q))){
-              votesum+= currentVoteResult.get(color);
+              votesum+= currentVoteResult.get(votes.get(q-1));
             }
          }
          actualVoteForEachColor.put(color, votesum);
@@ -189,7 +189,8 @@ public abstract class Room {
      * @param increaseNum
      */
     public void voteResultAfterItem(String color, int increaseNum){
-        int originalvote = currentVoteResult.get(color.toUpperCase());
+        String COLOR = color.toUpperCase();
+        int originalvote = currentVoteResult.get(COLOR);
         int newvote = originalvote + increaseNum;
         currentVoteResult.replace(color,newvote);
 
@@ -250,30 +251,33 @@ public abstract class Room {
         r1.enter(c4);
 //        r1.enter(c5);
         System.out.println(r1);
-//        r1.resetVoteResult();
-//        System.out.println(r1.getCurrentVoteResult());
-//        List<String> votes = new ArrayList<>();
-//        votes.add("RED");
-//        votes.add("RED");
-//        votes.add("RED");
-//        votes.add("red");
-//        votes.add("RED");
-//        votes.add("RED");
-//        r1.voteResultAfterVote(votes);
-//        System.out.println(r1.getCurrentVoteResult());
-//        System.out.println(r1.winner());
-//        r1.voteResultAfterItem("red",3);
-//        r1.voteResultAfterItem("YELLOW",2);
-//        System.out.println(r1.getCurrentVoteResult());
-//        System.out.println(r1.winner());
-        System.out.println(r1.modelNumber());
-        r1.zombieApproached();
-        r1.zombieApproached();
-        r1.zombieApproached();
-        r1.zombieApproached();
-
-
-        System.out.println(r1);
-        System.out.println(r1.isFallen());
+        r1.resetVoteResult();
+        System.out.println(r1.getCurrentVoteResult());
+        List<String> votes = new ArrayList<>();
+        votes.add("RED");
+        votes.add("RED");
+        votes.add("RED");
+        votes.add("red");
+        votes.add("YELLOW");
+        votes.add("RED");
+        r1.voteResultAfterVote(votes);
+        System.out.println(r1.getCurrentVoteResult());
+        System.out.println(r1.winner());
+        r1.voteResultAfterItem("RED",3);
+        r1.voteResultAfterItem("YELLOW",2);
+        System.out.println(r1.getCurrentVoteResult());
+        System.out.println(r1.winner());
+        String red = "red";
+        String RED = red.toUpperCase();
+        System.out.println(RED);
+//        System.out.println(r1.modelNumber());
+//        r1.zombieApproached();
+//        r1.zombieApproached();
+//        r1.zombieApproached();
+//        r1.zombieApproached();
+//
+//
+//        System.out.println(r1);
+//        System.out.println(r1.isFallen());
     }
 }
