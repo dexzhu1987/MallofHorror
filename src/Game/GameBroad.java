@@ -1,3 +1,5 @@
+package Game;
+
 import Dice.PairofDice;
 import Item.*;
 import Playable.*;

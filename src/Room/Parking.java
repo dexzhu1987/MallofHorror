@@ -10,7 +10,7 @@ public class Parking extends Room {
 
     @Override
     public boolean isFallen(){
-        if (roomCharaters.size()>0){
+        if (roomCharaters.size()>0 && currentZombienumber>0){
             return true;
         }
         else {

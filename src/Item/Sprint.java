@@ -2,9 +2,9 @@ package Item;
 
 import Room.*;
 import Playable.*;
-
 import java.util.*;
 import Character.*;
+import Game.*;
 
 public class Sprint extends Item {
     public Sprint() {
@@ -64,19 +64,24 @@ public class Sprint extends Item {
         }
         Room leavingroom = room;
         leavingroom.leave(selectedCharacter);
-        if (leavingroom.isFull()){
-            .enter(selectedCharacter);
-            System.out.println("Due to room is full, character is moved to Parking instead");
-        }else {
-            gameBroad.matchRoom(startplayerroomnumber).enter(selectedCharacter);
-        }
-        ;
-        System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect) + " leave " +
-                leavingroom.getName() + " enter " + gameBroad.matchRoom(startplayerroomnumber).getName());
-        System.out.println();
+        System.out.println(selectedCharacter + " has lefted " + leavingroom.getName());
+        affectedRoomNumber = roompicked;
+        affectedGameCharacter = selectedCharacter;
+
     }
 
-
+    public void afterEffect(GameBroad gameBroad){
+        System.out.println("Due to Sprint has been used, aftereffect(entering destination is triggerd");
+        if (gameBroad.matchRoom(affectedRoomNumber).isFull()){
+            gameBroad.matchRoom(4).enter(affectedGameCharacter);
+            System.out.println("Due to " + gameBroad.matchRoom(affectedRoomNumber).getName() + " is full, " + affectedGameCharacter + " will go to Parking instead.");
+            System.out.println("------------------------------------------------------------------------------");
+        }else {
+            gameBroad.matchRoom(affectedRoomNumber).enter(affectedGameCharacter);
+            System.out.println(affectedGameCharacter + " has entered " + gameBroad.matchRoom(affectedRoomNumber).getName());
+            System.out.println("------------------------------------------------------------------------------");
+        }
+    }
 
 
 }
