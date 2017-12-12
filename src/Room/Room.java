@@ -247,7 +247,7 @@ public abstract class Room {
 //        r1.voteResultAfterItem("YELLOW",2);
 //        System.out.println(r1.getCurrentVoteResult());
 //        System.out.println(r1.winner());
-//        System.out.println(r1.modelNumber());
+        System.out.println(r1.modelNumber());
         r1.zombieApproached();
         r1.zombieApproached();
         r1.zombieApproached();
