@@ -10,15 +10,18 @@ public class Hardware extends Item {
     }
 
     public void effect(Playable player, Room room) {
+        System.out.println("--------------------------------Hareware-------------------------------------");
         System.out.println("You have choosed Hareware");
         System.out.println("The defend of this room has temporarily increased by 1");
         room.zombieKilled();
         System.out.println("A zomie has temporarly moved to somewhere else");
         affectedRoomNumber = room.getRoomNum();
+        System.out.println("------------------------------------------------------------------------------");
 
     }
 
     public void afterEffect(GameBroad gameBroad){
+        System.out.println("------------------------------Hareware----------------------------------------");
         System.out.println("Due to Hareware has been used, aftereffect is triggerd");
         gameBroad.matchRoom(affectedRoomNumber).zombieApproached();
         System.out.println("The zombie left has returned");

@@ -53,6 +53,10 @@ public class Playable {
         return characters;
     }
 
+    public void removeCharacter(GameCharacter character){
+        characters.remove(character);
+    }
+
     public int totalVictoryPoints (){
         int sum = 0 ;
         for (GameCharacter character: characters){
@@ -220,9 +224,9 @@ public class Playable {
     public static void main(String[] args) {
         Playable p1 = new Player();
         System.out.println( p1.choose("Gunman"));
-        p1.chardeath("Tough guy");
-//        System.out.println(p1.remaingCharacter());
-//        System.out.println(p1.getGameCharacters());
+        p1.chardeath("tough guy");
+        System.out.println(p1.remaingCharacter());
+        System.out.println(p1.getGameCharacters());
 //
 //        System.out.println();
 //        System.out.println(p1.selectchoose("Model"));
@@ -233,19 +237,27 @@ public class Playable {
 //        System.out.println(p1.getCharactersselect());
 //        p1.selectchooseremove("Model");
 //        System.out.println(p1.getCharactersselect());
+//
+        Item shortgun= new ShotGun();
+        Item threat = new Threat();
+        Item security = new SecurityCamera();
+        Item hardware = new Hardware();
+        Item hidden = new Hidden();
 
-        p1.getItem(new ShotGun());
-        p1.getItem(new Threat());
-        p1.getItem(new Threat());
-        p1.getItem(new SecurityCamera());
-        p1.getItem(new Hardware());
-        p1.getItem(new Hidden());
+        p1.getItem(shortgun);
+        p1.getItem(threat);
+        p1.getItem(threat);
+        p1.getItem(security);
+        p1.getItem(hardware);
+        p1.getItem(hidden);
         System.out.println(p1.getCurrentItem());
         System.out.println(p1.hasOthersItems());
         System.out.println(p1.threatNum());
         System.out.println(p1.securityCameraNum());
         System.out.println(p1.otherItemsList());
-
+        Item threat1 = new Threat();
+        p1.usedItem(threat);
+        System.out.println(p1.getCurrentItem());
     }
 
 

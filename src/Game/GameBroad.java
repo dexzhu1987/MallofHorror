@@ -97,6 +97,17 @@ public class GameBroad {
         return players.get(q);
     }
 
+    public Item matchItem(Playable player, String name){
+        int q = 0;
+        for (int i=0; i<player.getCurrentItem().size(); i++){
+            if (name.equalsIgnoreCase(player.getCurrentItem().get(i).getName())){
+                q = i;
+            }
+        }
+        return player.getCurrentItem().get(q);
+    }
+
+
     public GameCharacter matchGameCharacter(Playable player, String gameCharacter){
        int q = 0;
        for (int i=0; i<player.getGameCharacters().size(); i++){

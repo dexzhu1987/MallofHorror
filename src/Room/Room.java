@@ -199,26 +199,32 @@ public abstract class Room {
     public String winner(){
         List<String> keys = new ArrayList<>(currentVoteResult.keySet());
         List<Integer> values= new ArrayList<>(currentVoteResult.values());
-        int max=values.get(0);
-        for (int i=0; i<values.size(); i++){
-            if (max<values.get(i)){
-                max=values.get(i);
+        if (values.size()>0){
+            int max=values.get(0);
+            for (int i=0; i<values.size(); i++){
+                if (max<values.get(i)){
+                    max=values.get(i);
+                }
             }
-        }
-        int q=0;
-        int count=0;
-        for (int i=0; i<values.size();i++){
-            if (max==values.get(i)){
-                q=i;
-                count++;
+            int q=0;
+            int count=0;
+            for (int i=0; i<values.size();i++){
+                if (max==values.get(i)){
+                    q=i;
+                    count++;
+                }
             }
-        }
-        if (count>1){
-            return "TIE";
+            if (count>1){
+                return "TIE";
+            }
+            else {
+                return keys.get(q);
+            }
         }
         else {
-            return keys.get(q);
+            return "TIE";
         }
+
 
 
     }
@@ -226,10 +232,14 @@ public abstract class Room {
     @Override
     public String toString() {
         String spaces="";
-        for (int i=0; i<80-(roomCharaters.toString().length()+ name.length()); i++){
+        for (int i=0; i<70-(roomCharaters.toString().length()); i++){
             spaces+=" ";
         }
-        return name + " has " + roomCharaters + spaces + "Current Zombies number: " + currentZombienumber;
+        String spaces2="";
+        for (int i=0; i<13-name.length(); i++){
+            spaces2+=" ";
+        }
+        return name + " (Capability: " + capability + ") " + spaces2 + " has " + roomCharaters + spaces + "Current Zombies number: " + currentZombienumber;
     }
 
 
@@ -255,9 +265,7 @@ public abstract class Room {
         System.out.println(r1.getCurrentVoteResult());
         List<String> votes = new ArrayList<>();
         votes.add("RED");
-        votes.add("RED");
-        votes.add("RED");
-        votes.add("red");
+        votes.add("yellow");
         votes.add("YELLOW");
         votes.add("RED");
         r1.voteResultAfterVote(votes);

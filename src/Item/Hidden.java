@@ -12,6 +12,7 @@ public class Hidden extends Item {
     }
 
     public void effect(Playable player, Room room) {
+        System.out.println("-------------------------------Hidden------------------------------------------");
         System.out.println("You have choosed Hidden");
         System.out.println("You will be hiding during the whole process, (you will not be eaten nor can join the voting)");
         System.out.println("Cosider your character temporaly leaving the room");
@@ -42,17 +43,32 @@ public class Hidden extends Item {
             }
         }
         room.leave(selectedCharacter);
-        System.out.println(selectedCharacter + " temporarily  lefted " + room.getName());
-        affectedRoomNumber = roompicked;
+        System.out.println(selectedCharacter + " temporarily lefted " + room.getName());
+        affectedRoomNumber = room.getRoomNum();
         affectedGameCharacter = selectedCharacter;
     }
 
     public void afterEffect(GameBroad gameBroad){
-        System.out.println("Due to Hidden has been used, aftereffect(entering back to the room is triggerd");
+        System.out.println("--------------------------------Hidden-----------------------------------------");
+        System.out.println("Due to Hidden has been used, aftereffect(entering back to the room is triggerd)");
         gameBroad.matchRoom(affectedRoomNumber).enter(affectedGameCharacter);
         System.out.println(affectedGameCharacter + " has entered back to " + gameBroad.matchRoom(affectedRoomNumber).getName());
         System.out.println("------------------------------------------------------------------------------");
     }
 
+    public static void main(String[] args) {
+        GameBroad gb = new GameBroad(1);
+        Room r1 = gb.matchRoom(4);
+        Playable p1 = gb.getPlayers().get(0);
+
+        Item item = new Hidden();
+        p1.setColor("RED");
+        r1.enter(p1.getGameCharacters().get(0));
+        r1.enter(p1.getGameCharacters().get(1));
+
+        item.effect(p1, r1);
+        item.afterEffect(gb);
+
+    }
 
 }

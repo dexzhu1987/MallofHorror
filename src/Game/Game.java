@@ -171,7 +171,9 @@ public class Game { // test
                         System.out.println("Please select correct color.");
                     }
                     else {
+                        votes.add(teammember.getColor());
                         votes.add(vote);
+
                     }
                 }
                 while (!colorcorrectselect(searchteam,vote));
@@ -202,10 +204,12 @@ public class Game { // test
                                 try {
                                     Scanner input = new Scanner(System.in);
                                     System.out.println(teammember + " please select how many THREAT you want use? from 0 to " + teammember.threatNum() );
+                                    System.out.println("Your current item list:" + teammember.getCurrentItem());
                                     numThreat = input.nextInt();
                                     if (numThreat<0 || numThreat>teammember.threatNum()){
                                         System.out.println("Please enter a valid amount");
                                     }
+
                                 }
                                 catch (Exception e){
                                     System.out.println("Please enter a number");
@@ -213,7 +217,18 @@ public class Game { // test
                                 }
                             }
                             while (loop || (numThreat<0 || numThreat>teammember.threatNum()) );
-                            gameBroad.matchRoom(4).voteResultAfterItem(teammember.getColor(),numThreat);
+                            String effectedColor = "";
+                            for (int i = 0; i<votes.size();i+=2){
+                                if (teammember.getColor().equalsIgnoreCase(votes.get(i))){
+                                    effectedColor = votes.get(i+1);
+                                }
+                            }
+                            effectedColor = effectedColor.toUpperCase();
+                            gameBroad.matchRoom(4).voteResultAfterItem(effectedColor,numThreat);
+                            for (int q=0; q<numThreat; q++){
+                                Item threat = gameBroad.matchItem(teammember,"Threat");
+                                teammember.usedItem(threat);
+                            }
                         }
                         System.out.println("Result after the THREAT used: " + gameBroad.matchRoom(4).getCurrentVoteResult());
                         do {
@@ -302,7 +317,7 @@ public class Game { // test
                         System.out.println("Please select who you want give (type in color) in the List: " +  others );
                         givecolor = input.nextLine();
                         if (!colorcorrectselect(others,givecolor)) {
-                            System.out.println("Please select correct color");
+                            System.out.println("Please select correct color.");
                         }
                 }
                 while (!colorcorrectselect(others,givecolor));
@@ -381,21 +396,33 @@ public class Game { // test
                                 loop = false;
                                 try {
                                     Scanner input = new Scanner(System.in);
-                                    System.out.println(teammember + " please select how many THREAT you want use? ");
+                                    System.out.println(teammember + " please select how many THREAT you want use? from 0 to " + teammember.threatNum() );
                                     System.out.println("Your current item list:" + teammember.getCurrentItem());
                                     numThreat = input.nextInt();
                                     if (numThreat < 0 || numThreat > teammember.threatNum()) {
                                         System.out.println("Please enter a valid amount");
                                     }
+
                                 } catch (Exception e) {
                                     System.out.println("Please enter a number");
                                     loop = true;
                                 }
                             }
                             while (loop || (numThreat < 0 || numThreat > teammember.threatNum()));
-                            gameBroad.matchRoom(currentVotingRoomNumber).voteResultAfterItem(teammember.getColor(), numThreat);
+                            for (int q=0; q<numThreat; q++){
+                                Item threat = gameBroad.matchItem(teammember,"Threat");
+                                teammember.usedItem(threat);
+                            }
+                            String effectedColor = "";
+                            for (int i = 0; i<votes.size();i+=2){
+                               if (teammember.getColor().equalsIgnoreCase(votes.get(i))){
+                                   effectedColor = votes.get(i+1);
+                               }
+                            }
+                            effectedColor = effectedColor.toUpperCase();
+                            gameBroad.matchRoom(currentVotingRoomNumber).voteResultAfterItem(effectedColor, numThreat);
                         }
-                        System.out.println("Result after the THREAT used: " + gameBroad.matchRoom(4).getCurrentVoteResult());
+                        System.out.println("Result after the THREAT used: " + gameBroad.matchRoom(currentVotingRoomNumber).getCurrentVoteResult());
                         do {
                             Scanner input = new Scanner(System.in);
                             System.out.println("Please confirm no more THREAT will be used (y/n)");
@@ -424,9 +451,11 @@ public class Game { // test
 
             int startplayer = 0;
             int startplayerroomnumber = 0;
-            if (gameBroad.matchRoom(5).winner().equals("TIE") ) {
-                System.out.println("Result is TIE");
-                System.out.println("No chief is elected");
+            if (!gameBroad.matchRoom(5).isEmpty() ) {
+                if (gameBroad.matchRoom(5).winner().equals("TIE")) {
+                    System.out.println("Result is TIE");
+                    System.out.println("No chief is elected");
+                }
             }
             //------------------------Room selecting begins-------------------------------
         System.out.println();
@@ -615,10 +644,11 @@ public class Game { // test
                     System.out.println("Due to room is full, character is moved to Parking instead");
                 }else {
                 gameBroad.matchRoom(startplayerroomnumber).enter(selectedCharacter);
+                System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect) + " leave " +
+                            leavingroom.getName() + " enter " + gameBroad.matchRoom(startplayerroomnumber).getName());
                 }
                 ;
-            System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect) + " leave " +
-                    leavingroom.getName() + " enter " + gameBroad.matchRoom(startplayerroomnumber).getName());
+
             System.out.println();
             //other players, first half
             int k = 0;
@@ -647,10 +677,11 @@ public class Game { // test
                     System.out.println("Due to room is full, character is moved to Parking instead");
                 }else {
                     gameBroad.matchRoom(roomspicked.get(q)).enter(selectedCharacter2);
+                    System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect) + " leave " +
+                            leavingroom2.getName() + " enter " + gameBroad.matchRoom(roomspicked.get(q)).getName());
                 }
                 k++;
-                System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect) + " leave " +
-                       leavingroom2.getName() + " enter " + gameBroad.matchRoom(roomspicked.get(q)).getName());
+
                 System.out.println();
             }
             for (int i = 0 ,q=k; i<startplayer; i++,q++){
@@ -678,9 +709,10 @@ public class Game { // test
                     System.out.println("Due to room is full, character is moved to Parking instead");
                 }else {
                     gameBroad.matchRoom(roomspicked.get(q)).enter(selectedCharacter2);
+                    System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect) + " leave " +
+                            leavingRoom2.getName() + " enter " + gameBroad.matchRoom(roomspicked.get(q)).getName());
                 }
-                System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect) + " leave " +
-                        leavingRoom2.getName() + " enter " + gameBroad.matchRoom(roomspicked.get(q)).getName());
+
                 System.out.println();
             }
 
@@ -751,7 +783,7 @@ public class Game { // test
                 HashSet<Playable> playersInTheRoom = gameBroad.WhoCan(fallenRoom.existCharacterColor());
                 System.out.println(fallenRoom.getName() + " has fallen, one character will be eaten");
                 //using items to save the room
-                if (teamHasOtherItems(playersInTheRoom)) {
+                if (teamHasOtherItems(playersInTheRoom)&& fallenRoom.getRoomNum()!=4) {
                         String yes = "";
                         do {
                             Scanner input = new Scanner(System.in);
@@ -786,7 +818,7 @@ public class Game { // test
                                              printTheListWithNumber(player.otherItemsList());
                                              System.out.println();
                                              Scanner input1 = new Scanner(System.in);
-                                             System.out.println("please type in (");
+                                             System.out.print("please type in (");
                                              printTheOptions(player.otherItemsList());
                                              System.out.print(")");
                                              System.out.println();
@@ -807,10 +839,10 @@ public class Game { // test
                                      player.usedItem(usedItem);
                                  }
                              }
-                             System.out.println("After using the item, the room is ended in below result");
+                             System.out.println("After using the items, the room is ended in below result");
                              gameBroad.printRooms();
                              Scanner input = new Scanner(System.in);
-                             System.out.println("Please confirmed no more items will be used");
+                             System.out.println("Please confirmed no more items will be used (y - no more item will be used/n - more item will be used)");
                              yes3 = input.nextLine();
                              if (!yes3.equalsIgnoreCase("n") && !yes3.equalsIgnoreCase("y")) {
                                  System.out.println("Please enter y or n");
@@ -844,7 +876,7 @@ public class Game { // test
                          }
                             fallenRoom.resetVoteResult();
                             fallenRoom.voteResultAfterVote(votes);
-                            System.out.println("Voting results: " + gameBroad.matchRoom(4).getCurrentVoteResult());
+                            System.out.println("Voting results: " + fallenRoom.getCurrentVoteResult());
                             //using Threat to change result;
                             if (teamHasThreat(playersInTheRoom)){
                                 String yes = "";
@@ -868,10 +900,13 @@ public class Game { // test
                                                 try {
                                                     Scanner input = new Scanner(System.in);
                                                     System.out.println(teammember + " please select how many THREAT you want use? from 0 to " + teammember.threatNum() );
+                                                    System.out.println("Your current item list:" + teammember.getCurrentItem());
                                                     numThreat = input.nextInt();
+
                                                     if (numThreat<0 || numThreat>teammember.threatNum()){
                                                         System.out.println("Please enter a valid amount");
                                                     }
+
                                                 }
                                                 catch (Exception e){
                                                     System.out.println("Please enter a number");
@@ -879,9 +914,20 @@ public class Game { // test
                                                 }
                                             }
                                             while (loop || (numThreat<0 || numThreat>teammember.threatNum()) );
-                                            fallenRoom.voteResultAfterItem(teammember.getColor(),numThreat);
+                                            String effectedColor = "";
+                                            for (int j = 0; j<votes.size(); j+=2){
+                                                if (teammember.getColor().equalsIgnoreCase(votes.get(j))){
+                                                    effectedColor = votes.get(j+1);
+                                                }
+                                            }
+                                            effectedColor = effectedColor.toUpperCase();
+                                            fallenRoom.voteResultAfterItem(effectedColor,numThreat);
+                                            for (int q=0; q<numThreat; q++){
+                                                Item threat = gameBroad.matchItem(teammember,"Threat");
+                                                teammember.usedItem(threat);
+                                            }
                                         }
-                                        System.out.println("Result after the THREAT used: " + gameBroad.matchRoom(4).getCurrentVoteResult());
+                                        System.out.println("Result after the THREAT used: " + fallenRoom.getCurrentVoteResult());
                                         do {
                                             Scanner input = new Scanner(System.in);
                                             System.out.println("Please confirm no more THREAT will be used (y/n)");
@@ -931,7 +977,9 @@ public class Game { // test
                                 }
                             }
                             while (!characterCorrectSelectForCertianList(availableOptions, deathCharacterStr));
-                        loser.chardeath(deathCharacterStr);
+                            GameCharacter deathCharacter = gameBroad.matchGameCharacter(loser,deathCharacterStr);
+                            loser.removeCharacter(deathCharacter);
+                            fallenRoom.leave(deathCharacter);
                             System.out.println(loser + " has lost his/her " + deathCharacterStr);
 
                         }
@@ -1064,7 +1112,7 @@ public class Game { // test
     public static void printTheOptions(List<Item> objects){
         int start = 1;
         for (Object o: objects){
-            System.out.print(start + ". ");
+            System.out.print(start + ".");
         }
 
     }
