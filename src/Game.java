@@ -10,7 +10,7 @@ import Character.*;
 import java.lang.reflect.Array;
 import java.util.*;
 
-public class Game { // test
+public class Game {
     public static void main(String[] args) {
 
         //deciding how many players phase;
