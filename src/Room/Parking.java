@@ -27,7 +27,7 @@ public class Parking extends Room {
         for (int i=0; i<12-name.length(); i++){
             spaces2+=" ";
         }
-        return name + " (Capability: " + capability + ") " + spaces2 + " has " + roomCharaters + spaces + "Current Zombies number: " + currentZombienumber;
+        return "ROOM "+roomNum + ". " + name + " (Capability: " + capability + ") " + spaces2 + " has " + roomCharaters + spaces + "Current Zombies number: " + currentZombienumber;
     }
 
 }

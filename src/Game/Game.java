@@ -142,7 +142,7 @@ public class Game { // test
             String ok7 = "";
             do {
                 Scanner input = new Scanner(System.in);
-                System.out.println(gameBroad.getPlayers().get(i) + " you have received a starter item (keep this to your yourself");
+                System.out.println(gameBroad.getPlayers().get(i) + " you have received a starter item (keep this to your yourself)");
                 System.out.println("Please type OK to move to the next step");
                 ok7 = input.nextLine();
             }
@@ -198,10 +198,12 @@ public class Game { // test
             }
             gameBroad.matchRoom(4).resetVoteResult();
             gameBroad.matchRoom(4).voteResultAfterVote(votes);
+            System.out.println("---------------------------Voting Results---------------------------------------------------");
             for (int l=0; l<votes.size(); l+=2){
                 System.out.println(gameBroad.matchPlayer(votes.get(l)) +  " has voted " + votes.get(l+1));
             }
-            System.out.println("Voting results: " + gameBroad.matchRoom(4).getCurrentVoteResult());
+            System.out.println("Summary: " + gameBroad.matchRoom(4).getCurrentVoteResult());
+            System.out.println("------------------------------------------------------------------------------");
             //using Threat to change result;
             if (teamHasThreat(searchteam)){
                 String yes = "";
@@ -255,7 +257,7 @@ public class Game { // test
                         System.out.println("Result after the THREAT used: " + gameBroad.matchRoom(4).getCurrentVoteResult());
                         do {
                             Scanner input = new Scanner(System.in);
-                            System.out.println("Please confirm no more THREAT will be used (y/n)");
+                            System.out.println("Please confirm no more THREAT will be used (y - there will be more THREAT/n - no more THREAT)");
                             quitThreatused = input.nextLine();
                             if (!quitThreatused.equalsIgnoreCase("n") && !quitThreatused.equalsIgnoreCase("y")) {
                                 System.out.println("Please enter y or n");
@@ -362,7 +364,7 @@ public class Game { // test
                 do {
                     Scanner input = new Scanner(System.in);
                     System.out.println(gameBroad.matchPlayer(givecolor) +  " you have received an item from " + gameBroad.matchPlayer(winnercolor) );
-                    System.out.println( " Pleaese type OK to view the item (keep it to yourself)");
+                    System.out.println( "Pleaese type OK to view the item (keep it to yourself)");
                     ok10 = input.nextLine();
                 }
                 while (!ok10.equalsIgnoreCase("ok"));
@@ -414,10 +416,12 @@ public class Game { // test
             }
             gameBroad.matchRoom(currentVotingRoomNumber).resetVoteResult();
             gameBroad.matchRoom(currentVotingRoomNumber).voteResultAfterVote(votes);
+            System.out.println("-----------------------Voting Results-------------------------------------------------------");
             for (int l=0; l<votes.size(); l+=2){
                 System.out.println(gameBroad.matchPlayer(votes.get(l)) +  " has voted " + votes.get(l+1));
             }
-            System.out.println("Voting results: " + gameBroad.matchRoom(currentVotingRoomNumber).getCurrentVoteResult());
+            System.out.println("Summary: " + gameBroad.matchRoom(currentVotingRoomNumber).getCurrentVoteResult());
+            System.out.println("------------------------------------------------------------------------------");
             //using Threat to change result;
             if (teamHasThreat(team)) {
                 String yes = "";
@@ -470,7 +474,7 @@ public class Game { // test
                         System.out.println("Result after the THREAT used: " + gameBroad.matchRoom(currentVotingRoomNumber).getCurrentVoteResult());
                         do {
                             Scanner input = new Scanner(System.in);
-                            System.out.println("Please confirm no more THREAT will be used (y/n)");
+                            System.out.println("Please confirm no more THREAT will be used (y - there will be more THREAT/n - no more THREAT)");
                             quitThreatused = input.nextLine();
                             if (!quitThreatused.equalsIgnoreCase("n") && !quitThreatused.equalsIgnoreCase("y")) {
                                 System.out.println("Please enter y or n");
@@ -573,7 +577,7 @@ public class Game { // test
                 do {
                     Scanner input = new Scanner(System.in);
                     System.out.println(gameBroad.matchPlayer(winnercolor) + " looked at the screens " +
-                            "found zombies are approaching to rooms(only winning player can see the result ),please type OK to move to next step)");
+                            "found zombies are approaching to rooms(only winning player can see the result),please type OK to move to next step)");
                     ok = input.nextLine();
                 }
                 while (!ok.equalsIgnoreCase("ok"));
@@ -741,7 +745,9 @@ public class Game { // test
                 gameBroad.inWhichRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect)).leave(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect));
                 if (gameBroad.matchRoom(startplayerroomnumber).isFull()){
                     gameBroad.matchRoom(4).enter(selectedCharacter);
-                    System.out.println("Due to room is full, character is moved to Parking instead");
+                    System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect) + " left " +
+                            leavingroom.getName() + " and wanted to enter " + gameBroad.matchRoom(startplayerroomnumber).getName());
+                    System.out.println("But due to room is full, character is moved to Parking instead");
                 }else {
                 gameBroad.matchRoom(startplayerroomnumber).enter(selectedCharacter);
                 System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect) + " leave " +
@@ -753,59 +759,98 @@ public class Game { // test
             //other players, first half
             int k = 0;
             for (int i = startplayer+1 ,q=0; i<gameBroad.getPlayers().size(); i++,q++){
+//                do {
+//                    Scanner input = new Scanner(System.in);
+//                    System.out.println(gameBroad.getPlayers().get(i) + " please choose your characters to Room " + roomspicked.get(q) + ": " +
+//                        gameBroad.matchRoom(roomspicked.get(q)).getName() );
+//                    System.out.println( gameBroad.getPlayers().get(i).getGameCharacters());
+//                    charselect = input.nextLine();
+//                    if (!characterCorrectSelectInGame(gameBroad.getPlayers().get(i),charselect)){
+//                        System.out.println("Please select correct character");
+//                    }
+//                    if (gameBroad.matchRoom(roomspicked.get(q)).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect))){
+//                        System.out.println("Character already in the room, please select other character");
+//                    }
+//                }
+//                while (!characterCorrectSelectInGame(gameBroad.getPlayers().get(i),charselect) ||
+//                        gameBroad.matchRoom(roomspicked.get(q)).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect)));
+                Playable actualPlayer = gameBroad.getPlayers().get(i);
+                Room destination2 = gameBroad.matchRoom(roomspicked.get(q));
+                boolean loop15 = false;
                 do {
+                    loop15 = false;
+                    characterNotInTheRoom(destination2, actualPlayer);
+                    System.out.println(actualPlayer + " please choose your characters to Room " + destination2.getName() + ": " +
+                        destination2.getName());
                     Scanner input = new Scanner(System.in);
-                    System.out.println(gameBroad.getPlayers().get(i) + " please choose your characters to Room " + roomspicked.get(q) + ": " +
-                        gameBroad.matchRoom(roomspicked.get(q)).getName() );
-                    System.out.println( gameBroad.getPlayers().get(i).getGameCharacters());
+                    System.out.println("In the list: " + characterNotInTheRoom(destination2, actualPlayer));
                     charselect = input.nextLine();
-                    if (!characterCorrectSelectInGame(gameBroad.getPlayers().get(i),charselect)){
+                    if (!characterCorrectSelectForCertianList(characterNotInTheRoom(destination2, actualPlayer),charselect)){
                         System.out.println("Please select correct character");
-                    }
-                    if (gameBroad.matchRoom(roomspicked.get(q)).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect))){
-                        System.out.println("Character already in the room, please select other character");
+                        loop15 =true;
                     }
                 }
-                while (!characterCorrectSelectInGame(gameBroad.getPlayers().get(i),charselect) ||
-                        gameBroad.matchRoom(roomspicked.get(q)).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect)));
+                while (loop15);
+
                 GameCharacter selectedCharacter2 =  gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect);
+
                 Room leavingroom2 = gameBroad.inWhichRoom(selectedCharacter2);
                 gameBroad.inWhichRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect)).leave(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect));
 
                 if (gameBroad.matchRoom(roomspicked.get(q)).isFull()){
                     gameBroad.matchRoom(4).enter(selectedCharacter2);
-                    System.out.println("Due to room is full, character is moved to Parking instead");
+                    System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect) + " lelf " +
+                            leavingroom2.getName() + " and wanted enter " + gameBroad.matchRoom(roomspicked.get(q)).getName());
+                    System.out.println("But due to room is full, character is moved to Parking instead");
                 }else {
                     gameBroad.matchRoom(roomspicked.get(q)).enter(selectedCharacter2);
                     System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect) + " leave " +
                             leavingroom2.getName() + " enter " + gameBroad.matchRoom(roomspicked.get(q)).getName());
                 }
                 k++;
-
                 System.out.println();
             }
             for (int i = 0 ,q=k; i<startplayer; i++,q++){
+//                do {
+//                    Scanner input = new Scanner(System.in);
+//                    System.out.println(gameBroad.getPlayers().get(i) + " please choose your characters to Room " + roomspicked.get(q) + ": " +
+//                            gameBroad.matchRoom(roomspicked.get(q)).getName() );
+//                    System.out.println(gameBroad.getPlayers().get(i).getGameCharacters());
+//                    charselect = input.nextLine();
+//                    if (!characterCorrectSelectInGame(gameBroad.getPlayers().get(i),charselect)){
+//                        System.out.println("Please select correct character");
+//                    }
+//                    if (gameBroad.matchRoom(roomspicked.get(q)).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect))){
+//                        System.out.println("Character already in the room, please select other character");
+//                    }
+//                }
+//                while (!characterCorrectSelectInGame(gameBroad.getPlayers().get(i),charselect) ||
+//                        gameBroad.matchRoom(roomspicked.get(q)).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect)));
+                Playable actualPlayer2 = gameBroad.getPlayers().get(i);
+                Room destination3 = gameBroad.matchRoom(roomspicked.get(q));
+                boolean loop16 = false;
                 do {
+                    loop16 = false;
+                    characterNotInTheRoom(destination3, actualPlayer2);
+                    System.out.println(actualPlayer2 + " please choose your characters to Room " + destination3.getName() + ": " +
+                            destination3.getName());
                     Scanner input = new Scanner(System.in);
-                    System.out.println(gameBroad.getPlayers().get(i) + " please choose your characters to Room " + roomspicked.get(q) + ": " +
-                            gameBroad.matchRoom(roomspicked.get(q)).getName() );
-                    System.out.println(gameBroad.getPlayers().get(i).getGameCharacters());
+                    System.out.println("In the list: " + characterNotInTheRoom(destination3, actualPlayer2));
                     charselect = input.nextLine();
-                    if (!characterCorrectSelectInGame(gameBroad.getPlayers().get(i),charselect)){
+                    if (!characterCorrectSelectForCertianList(characterNotInTheRoom(destination3, actualPlayer2),charselect)){
                         System.out.println("Please select correct character");
-                    }
-                    if (gameBroad.matchRoom(roomspicked.get(q)).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect))){
-                        System.out.println("Character already in the room, please select other character");
+                        loop16 =true;
                     }
                 }
-                while (!characterCorrectSelectInGame(gameBroad.getPlayers().get(i),charselect) ||
-                        gameBroad.matchRoom(roomspicked.get(q)).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect)));
+                while (loop16);
                 GameCharacter selectedCharacter2 = gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect);
                 Room leavingRoom2 = gameBroad.inWhichRoom(selectedCharacter2);
                 gameBroad.inWhichRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect)).leave(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect));
 
                 if (gameBroad.matchRoom(roomspicked.get(q)).isFull()){
                     gameBroad.matchRoom(4).enter(selectedCharacter2);
+                    System.out.println(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(i),charselect) + " left " +
+                            leavingRoom2.getName() + " and wanted to enter " + gameBroad.matchRoom(roomspicked.get(q)).getName());
                     System.out.println("Due to room is full, character is moved to Parking instead");
                 }else {
                     gameBroad.matchRoom(roomspicked.get(q)).enter(selectedCharacter2);
@@ -977,10 +1022,12 @@ public class Game { // test
                          }
                             fallenRoom.resetVoteResult();
                             fallenRoom.voteResultAfterVote(votes);
+                            System.out.println("------------------------------Voting Results------------------------------------------------");
                             for (int l=0; l<votes.size(); l+=2){
                                 System.out.println(gameBroad.matchPlayer(votes.get(l)) +  " has voted " + votes.get(l+1));
                             }
-                            System.out.println("Voting results: " + fallenRoom.getCurrentVoteResult());
+                            System.out.println("Summary: " + fallenRoom.getCurrentVoteResult());
+                            System.out.println("------------------------------------------------------------------------------");
                             //using Threat to change result;
                             if (teamHasThreat(playersInTheRoom)){
                                 String yes = "";
@@ -1034,7 +1081,7 @@ public class Game { // test
                                         System.out.println("Result after the THREAT used: " + fallenRoom.getCurrentVoteResult());
                                         do {
                                             Scanner input = new Scanner(System.in);
-                                            System.out.println("Please confirm no more THREAT will be used (y/n)");
+                                            System.out.println("Please confirm no more THREAT will be used (y - there will be more THREAT/n - no more THREAT)");
                                             quitThreatused = input.nextLine();
                                             if (!quitThreatused.equalsIgnoreCase("n") && !quitThreatused.equalsIgnoreCase("y")) {
                                                 System.out.println("Please enter y or n");
