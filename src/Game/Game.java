@@ -112,6 +112,9 @@ public class Game { // test
                                 } catch (Exception e) {
                                     System.out.println("Please enter a number");
                                 }
+                                if (!gameBroad.matchRoom(preroomselect).isFull()){
+                                    break;
+                                }
                             }
                         }
                         while (yes.equalsIgnoreCase("n"));
@@ -136,9 +139,24 @@ public class Game { // test
         gameBroad.getItemDeck().shuffle();
         for (int i=0; i<gameBroad.getPlayers().size(); i++)
         {
+            String ok7 = "";
+            do {
+                Scanner input = new Scanner(System.in);
+                System.out.println(gameBroad.getPlayers().get(i) + " you have received a starter item (keep this to your yourself");
+                System.out.println("Please type OK to move to the next step");
+                ok7 = input.nextLine();
+            }
+            while (!ok7.equalsIgnoreCase("ok"));
             Item starterItem = gameBroad.getItemDeck().deal();
             gameBroad.getPlayers().get(i).getItem(starterItem);
             System.out.println(gameBroad.getPlayers().get(i) + " received " + starterItem);
+            String ok2 = "";
+            do {
+                Scanner input = new Scanner(System.in);
+                System.out.println("Please type OK to move to the next step");
+                ok2 = input.nextLine();
+            }
+            while (!ok2.equalsIgnoreCase("ok"));
             System.out.println();
         }
 
@@ -180,6 +198,9 @@ public class Game { // test
             }
             gameBroad.matchRoom(4).resetVoteResult();
             gameBroad.matchRoom(4).voteResultAfterVote(votes);
+            for (int l=0; l<votes.size(); l+=2){
+                System.out.println(gameBroad.matchPlayer(votes.get(l)) +  " has voted " + votes.get(l+1));
+            }
             System.out.println("Voting results: " + gameBroad.matchRoom(4).getCurrentVoteResult());
             //using Threat to change result;
             if (teamHasThreat(searchteam)){
@@ -198,9 +219,9 @@ public class Game { // test
                     do {
                         int numThreat = 0;
                         for (Playable teammember: searchteam){
-                            boolean loop = false;
+                            boolean loop6 = false;
                             do {
-                                loop=false;
+                                loop6=false;
                                 try {
                                     Scanner input = new Scanner(System.in);
                                     System.out.println(teammember + " please select how many THREAT you want use? from 0 to " + teammember.threatNum() );
@@ -208,15 +229,16 @@ public class Game { // test
                                     numThreat = input.nextInt();
                                     if (numThreat<0 || numThreat>teammember.threatNum()){
                                         System.out.println("Please enter a valid amount");
+                                        loop6 = true;
                                     }
 
                                 }
                                 catch (Exception e){
                                     System.out.println("Please enter a number");
-                                    loop = true;
+                                    loop6 = true;
                                 }
                             }
-                            while (loop || (numThreat<0 || numThreat>teammember.threatNum()) );
+                            while (loop6);
                             String effectedColor = "";
                             for (int i = 0; i<votes.size();i+=2){
                                 if (teammember.getColor().equalsIgnoreCase(votes.get(i))){
@@ -272,44 +294,47 @@ public class Game { // test
                 System.out.println("You get 1."+ itemtemplist.get(0) +", 2." + itemtemplist.get(1) +" and 3." +
                         itemtemplist.get(2) );
                 int itemselect = 0;
-                boolean loop =false;
+                boolean loop7 =false;
                 do {
                     try {
-                        loop =false;
+                        loop7 =false;
                         Scanner input= new Scanner(System.in);
                         System.out.println("Please select the item you want to keep (1,2,or 3)" );
                         itemselect = input.nextInt();
                         if (itemselect!=1 && itemselect !=2 && itemselect!=3){
                             System.out.println("Please select (1, 2, or 3)");
+                            loop7=true;
                         }
                     }
                     catch (Exception e){
                         System.out.println("Please enter a number");
-                        loop = true;
+                        loop7 = true;
                     }
                 }
-                while (loop || (itemselect!=1 && itemselect !=2 && itemselect!=3));
+                while (loop7 );
                 System.out.println("You get " + itemtemplist.get(itemselect-1) );
                 gameBroad.matchPlayer(winnercolor).getItem(itemtemplist.get(itemselect-1) );
                 itemtemplist.remove(itemselect-1);
                 System.out.println("Remaining items: " + " 1."+ itemtemplist.get(0) +", 2." + itemtemplist.get(1) );
                 int itemgiveselect = 0;
+                boolean loop8 = false;
                 do {
                     try {
-                        loop =false;
+                        loop8 =false;
                         Scanner input= new Scanner(System.in);
                         System.out.println("Please select the item you want to give (1 or 2)" );
                         itemgiveselect = input.nextInt();
                         if (itemgiveselect!=1 && itemgiveselect !=2){
                             System.out.println("Please select (1 or 2");
+                            loop8=true;
                         }
                     }
                     catch (Exception e){
                         System.out.println("Please enter a number");
-                        loop = true;
+                        loop8 = true;
                     }
                 }
-                while (loop || (itemgiveselect!=1 && itemgiveselect !=2));
+                while (loop8);
                 String givecolor="";
                 HashSet<Playable> others = gameBroad.RemainPlayers(gameBroad.matchPlayer(winnercolor));
                 do {
@@ -321,6 +346,7 @@ public class Game { // test
                         }
                 }
                 while (!colorcorrectselect(others,givecolor));
+                Item giveItem = itemtemplist.get(itemgiveselect-1);
             gameBroad.matchPlayer(givecolor).getItem(itemtemplist.get(itemgiveselect-1));
             itemtemplist.remove(itemgiveselect-1);
             gameBroad.getItemDeck().addBackItem(itemtemplist.get(0));
@@ -332,7 +358,22 @@ public class Game { // test
                 }
                 while (!ok1.equalsIgnoreCase("ok"));
                 System.out.println();
-
+                String ok10="";
+                do {
+                    Scanner input = new Scanner(System.in);
+                    System.out.println(gameBroad.matchPlayer(givecolor) +  " you have received an item from " + gameBroad.matchPlayer(winnercolor) );
+                    System.out.println( " Pleaese type OK to view the item (keep it to yourself)");
+                    ok10 = input.nextLine();
+                }
+                while (!ok10.equalsIgnoreCase("ok"));
+                System.out.println("You have received " + giveItem);
+                String ok11="";
+                do {
+                    Scanner input = new Scanner(System.in);
+                    System.out.println("Other players will be joining the game now, type OK to continue");
+                    ok11 = input.nextLine();
+                }
+                while (!ok11.equalsIgnoreCase("ok"));
                 System.out.println();
                 System.out.println("Player " + givecolor + " get an item from player " + winnercolor);
                 System.out.println();
@@ -373,6 +414,9 @@ public class Game { // test
             }
             gameBroad.matchRoom(currentVotingRoomNumber).resetVoteResult();
             gameBroad.matchRoom(currentVotingRoomNumber).voteResultAfterVote(votes);
+            for (int l=0; l<votes.size(); l+=2){
+                System.out.println(gameBroad.matchPlayer(votes.get(l)) +  " has voted " + votes.get(l+1));
+            }
             System.out.println("Voting results: " + gameBroad.matchRoom(currentVotingRoomNumber).getCurrentVoteResult());
             //using Threat to change result;
             if (teamHasThreat(team)) {
@@ -391,9 +435,9 @@ public class Game { // test
                     do {
                         int numThreat = 0;
                         for (Playable teammember : team) {
-                            boolean loop = false;
+                            boolean loop9 = false;
                             do {
-                                loop = false;
+                                loop9 = false;
                                 try {
                                     Scanner input = new Scanner(System.in);
                                     System.out.println(teammember + " please select how many THREAT you want use? from 0 to " + teammember.threatNum() );
@@ -401,14 +445,15 @@ public class Game { // test
                                     numThreat = input.nextInt();
                                     if (numThreat < 0 || numThreat > teammember.threatNum()) {
                                         System.out.println("Please enter a valid amount");
+                                        loop9 = true;
                                     }
 
                                 } catch (Exception e) {
                                     System.out.println("Please enter a number");
-                                    loop = true;
+                                    loop9 = true;
                                 }
                             }
-                            while (loop || (numThreat < 0 || numThreat > teammember.threatNum()));
+                            while (loop9);
                             for (int q=0; q<numThreat; q++){
                                 Item threat = gameBroad.matchItem(teammember,"Threat");
                                 teammember.usedItem(threat);
@@ -466,22 +511,59 @@ public class Game { // test
                 Random generator = new Random();
                 startplayer = generator.nextInt(gameBroad.getPlayers().size());
                 System.out.println("As a result, a random player will start first.");
-                boolean loop = false;
+                Playable startActPlayer = gameBroad.getPlayers().get(startplayer);
+
+                if (startActPlayer.hasSecurityCamera()) {
+                    String yes10 = "";
+                    do {
+                        Scanner input = new Scanner(System.in);
+                        System.out.println("The results can be viewed by using item SecurityCamera, you want to use Security Camera?(y/n)");
+                        yes10 = input.nextLine();
+                        if (!yes10.equalsIgnoreCase("n") && !yes10.equalsIgnoreCase("y")) {
+                            System.out.println("Please enter y or n");
+                        }
+                    }
+                    while (!yes10.equalsIgnoreCase("n") && !yes10.equalsIgnoreCase("y"));
+                    if (yes10.equalsIgnoreCase("y")) {
+                            String yes11 = "";
+                            do {
+                                Scanner input = new Scanner(System.in);
+                                System.out.println(startActPlayer + " please confirm you want to use your SecurityCamera Item to view the result(y/n)");
+                                System.out.println("Your item list:" + startActPlayer.getCurrentItem());
+                                yes11 = input.nextLine();
+                                if (!yes11.equalsIgnoreCase("n") && !yes11.equalsIgnoreCase("y")) {
+                                    System.out.println("Please enter y or n");
+                                }
+                            }
+                            while (!yes11.equalsIgnoreCase("n") && !yes11.equalsIgnoreCase("y"));
+                            if (yes11.equalsIgnoreCase("y")) {
+                                if (startActPlayer.hasSecurityCamera()) {
+                                    System.out.println("Zombies will be approaching rooms ");
+                                    System.out.println(dices);
+                                    System.out.println("Each number means the correspoding room will have one zombie");
+                                } else {
+                                    System.out.println("You do not have a Security Camera");
+                                }
+                            }
+                        }
+                    }
+                boolean loop10 = false;
                 do {
-                    loop = false;
+                    loop10 = false;
                     try {
                         Scanner input = new Scanner(System.in);
                         System.out.println(gameBroad.getPlayers().get(startplayer) + " please choose your room number");
                         startplayerroomnumber = input.nextInt();
                         if (startplayerroomnumber < 0 || startplayerroomnumber > 6) {
                             System.out.println("Please enter a valid room number");
+                            loop10 =true;
                         }
                     } catch (Exception e) {
                         System.out.println("Please enter a number");
-                        loop = true;
+                        loop10 = true;
                     }
                 }
-                while (loop || (startplayerroomnumber < 0 || startplayerroomnumber > 6));
+                while (loop10);
             } else {
                 String winnercolor = gameBroad.matchRoom(currentVotingRoomNumber).winner();
                 System.out.println("Voting Result: " + gameBroad.matchRoom(currentVotingRoomNumber).getCurrentVoteResult());
@@ -504,22 +586,23 @@ public class Game { // test
                 }
                 while (!ok.equalsIgnoreCase("ok"));
                 System.out.println("Please choose the room number that you will go to");
-                boolean loop = false;
+                boolean loop11 = false;
                 do {
-                    loop = false;
+                    loop11 = false;
                     try {
                         Scanner input = new Scanner(System.in);
                         System.out.println(gameBroad.getPlayers().get(startplayer) + " please choose your room number");
                         startplayerroomnumber = input.nextInt();
                         if (startplayerroomnumber < 0 || startplayerroomnumber > 6) {
                             System.out.println("Please enter a valid room number");
+                            loop11 = true;
                         }
                     } catch (Exception e) {
                         System.out.println("Please enter a number");
-                        loop = true;
+                        loop11 = true;
                     }
                 }
-                while (loop || (startplayerroomnumber < 0 || startplayerroomnumber > 6));
+                while (loop11);
                 System.out.println("After reviewing the monitor, the chief will go to Room " + startplayerroomnumber);
             }
             if (teamHasSecurityCamera(gameBroad.getPlayers())) {
@@ -573,9 +656,9 @@ public class Game { // test
             //first half of players
             for (int i = startplayer+1; i<gameBroad.getPlayers().size(); i++){
                 int roompicked = 0;
-                boolean loop = false;
+                boolean loop12 = false;
                 do {
-                    loop=false;
+                    loop12=false;
                     try {
                         Scanner input = new Scanner(System.in);
                         System.out.println(gameBroad.getPlayers().get(i) + " please choose your room number");
@@ -583,21 +666,22 @@ public class Game { // test
                         roomspicked.add(roompicked);
                         if (roompicked<0 || roompicked>6){
                             System.out.println("Please enter a valid room number");
+                            loop12 = true;
                         }
                     }
                     catch (Exception e){
                         System.out.println("Please enter a number");
-                        loop = true;
+                        loop12 = true;
                     }
                 }
-                while (loop || (roompicked<0 || roompicked>6) );
+                while (loop12);
             }
             //other half players
             for (int i = 0; i<startplayer; i++){
                 int roompicked = 0;
-                boolean loop = false;
+                boolean loop13 = false;
                 do {
-                    loop=false;
+                    loop13=false;
                     try {
                         Scanner input = new Scanner(System.in);
                         System.out.println(gameBroad.getPlayers().get(i) + " please choose your room number");
@@ -605,14 +689,15 @@ public class Game { // test
                         roomspicked.add(roompicked);
                         if (roompicked<0 || roompicked>6){
                             System.out.println("Please enter a valid room number");
+                            loop13 = true;
                         }
                     }
                     catch (Exception e){
                         System.out.println("Please enter a number");
-                        loop = true;
+                        loop13 = true;
                     }
                 }
-                while (loop || (roompicked<0 || roompicked>6) );
+                while (loop13);
             }
             System.out.println();
             System.out.println("--------------------------Moving begins---------------------");
@@ -620,22 +705,37 @@ public class Game { // test
             System.out.println();
             //-------------------------- now players choose character and move to rooms;
             //start player move
+                    Playable startActualPlayer = gameBroad.getPlayers().get(startplayer);
+                    Room destination = gameBroad.matchRoom(startplayerroomnumber);
                     System.out.println(gameBroad.getPlayers().get(startplayer) + " please choose your characters to Room " + startplayerroomnumber + ": " +
                     gameBroad.matchRoom(startplayerroomnumber).getName() );
                     String charselect = "";
+//                do {
+//                    Scanner input = new Scanner(System.in);
+//                    System.out.println("In the list: " + gameBroad.getPlayers().get(startplayer).getGameCharacters());
+//                    charselect = input.nextLine();
+//                    if (!characterCorrectSelectInGame(gameBroad.getPlayers().get(startplayer),charselect)){
+//                        System.out.println("Please select correct character");
+//                    }
+//                    if (gameBroad.matchRoom(startplayerroomnumber).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect))){
+//                        System.out.println("Character already in the room, please select other character");
+//                    }
+//                }
+//            while (!characterCorrectSelectInGame(gameBroad.getPlayers().get(startplayer),charselect) ||
+//                        gameBroad.matchRoom(startplayerroomnumber).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect)));
+                boolean loop2 = false;
                 do {
-                    Scanner input = new Scanner(System.in);
-                    System.out.println("In the list: " + gameBroad.getPlayers().get(startplayer).getGameCharacters());
-                    charselect = input.nextLine();
-                    if (!characterCorrectSelectInGame(gameBroad.getPlayers().get(startplayer),charselect)){
-                        System.out.println("Please select correct character");
-                    }
-                    if (gameBroad.matchRoom(startplayerroomnumber).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect))){
-                        System.out.println("Character already in the room, please select other character");
+                loop2 = false;
+                characterNotInTheRoom(destination, startActualPlayer);
+                Scanner input = new Scanner(System.in);
+                System.out.println("In the list: " + characterNotInTheRoom(destination, startActualPlayer));
+                charselect = input.nextLine();
+                if (!characterCorrectSelectForCertianList(characterNotInTheRoom(destination, startActualPlayer),charselect)){
+                    System.out.println("Please select correct character");
+                    loop2 =true;
                     }
                 }
-            while (!characterCorrectSelectInGame(gameBroad.getPlayers().get(startplayer),charselect) ||
-                        gameBroad.matchRoom(startplayerroomnumber).inTheRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect)));
+                 while (loop2);
                 GameCharacter selectedCharacter = gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect);
                 Room leavingroom = gameBroad.inWhichRoom(selectedCharacter);
                 gameBroad.inWhichRoom(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect)).leave(gameBroad.matchGameCharacter(gameBroad.getPlayers().get(startplayer),charselect));
@@ -809,10 +909,10 @@ public class Game { // test
                              for (Playable player : playersInTheRoom) {
                                  if (player.hasOthersItems()) {
                                      int itemselected = 0;
-                                     boolean loop = false;
+                                     boolean loop3 = false;
                                      do {
                                          try {
-                                             loop = false;
+                                             loop3 = false;
                                              System.out.println( player + " please select which items you want to use");
                                              System.out.print("Your item list:");
                                              printTheListWithNumber(player.otherItemsList());
@@ -826,13 +926,14 @@ public class Game { // test
                                              if (itemselected < 0 || itemselected > player.otherItemsList().size()) {
                                                  System.out.println("please type in ");
                                                  printTheOptions(player.otherItemsList());
+                                                 loop3 = true;
                                              }
                                          } catch (Exception e) {
                                              System.out.println("Please enter a number");
-                                             loop = true;
+                                             loop3 = true;
                                          }
                                      }
-                                     while (loop || (itemselected < 0 || itemselected > player.otherItemsList().size()));
+                                     while (loop3);
                                      Item usedItem = player.otherItemsList().get(itemselected - 1);
                                      usedItemsList.add(usedItem);
                                      usedItem.effect(player, fallenRoom);
@@ -876,6 +977,9 @@ public class Game { // test
                          }
                             fallenRoom.resetVoteResult();
                             fallenRoom.voteResultAfterVote(votes);
+                            for (int l=0; l<votes.size(); l+=2){
+                                System.out.println(gameBroad.matchPlayer(votes.get(l)) +  " has voted " + votes.get(l+1));
+                            }
                             System.out.println("Voting results: " + fallenRoom.getCurrentVoteResult());
                             //using Threat to change result;
                             if (teamHasThreat(playersInTheRoom)){
@@ -894,9 +998,9 @@ public class Game { // test
                                     do {
                                         int numThreat = 0;
                                         for (Playable teammember: playersInTheRoom){
-                                            boolean loop = false;
+                                            boolean loop4 = false;
                                             do {
-                                                loop=false;
+                                                loop4=false;
                                                 try {
                                                     Scanner input = new Scanner(System.in);
                                                     System.out.println(teammember + " please select how many THREAT you want use? from 0 to " + teammember.threatNum() );
@@ -910,10 +1014,10 @@ public class Game { // test
                                                 }
                                                 catch (Exception e){
                                                     System.out.println("Please enter a number");
-                                                    loop = true;
+                                                    loop4 = true;
                                                 }
                                             }
-                                            while (loop || (numThreat<0 || numThreat>teammember.threatNum()) );
+                                            while (loop4);
                                             String effectedColor = "";
                                             for (int j = 0; j<votes.size(); j+=2){
                                                 if (teammember.getColor().equalsIgnoreCase(votes.get(j))){
@@ -1116,5 +1220,18 @@ public class Game { // test
         }
 
     }
+
+    public static List<GameCharacter> characterNotInTheRoom (Room room, Playable player) {
+        List<GameCharacter> notInTheRoomList = new ArrayList<GameCharacter>();
+        for (GameCharacter character: player.getGameCharacters()){
+            if (!room.inTheRoom(character)){
+                notInTheRoomList.add(character);
+            }
+        }
+
+        return notInTheRoomList;
+    }
+
+
 
 }

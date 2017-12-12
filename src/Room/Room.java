@@ -239,7 +239,7 @@ public abstract class Room {
         for (int i=0; i<13-name.length(); i++){
             spaces2+=" ";
         }
-        return name + " (Capability: " + capability + ") " + spaces2 + " has " + roomCharaters + spaces + "Current Zombies number: " + currentZombienumber;
+        return "ROOM "+roomNum + ". " + name + " (Capability: " + capability + ") " + spaces2 + " has " + roomCharaters + spaces + "Current Zombies number: " + currentZombienumber;
     }
 
 
