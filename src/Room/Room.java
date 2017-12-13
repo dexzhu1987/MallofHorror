@@ -67,6 +67,10 @@ public abstract class Room {
         return roomCharaters.size()==0;
     }
 
+    public void setCurrentZombienumber(int currentZombienumber) {
+        this.currentZombienumber = currentZombienumber;
+    }
+
     /**
      * if the room has enough strength to defend the zombies
      * @return whether the room has fallen, if it is (true), the zombies will attack
@@ -74,6 +78,7 @@ public abstract class Room {
     public boolean isFallen(){
         if (roomCharaters.size()>0) {
             int defend = 0;
+
             for (GameCharacter character : roomCharaters) {
                 defend += character.getStrength();
             }
