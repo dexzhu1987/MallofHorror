@@ -1136,7 +1136,7 @@ public class Game { // test
                             System.out.println("Zombies have their feast, and returned back to somewhere else to find their next target!");
                             System.out.println();
                             System.out.println("-------------------------------------------------------------------------");
-4
+
                         }
                         //after effect for certain items
                         for (Item item: usedItemsList){

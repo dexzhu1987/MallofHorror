@@ -5,9 +5,6 @@ public class Model extends GameCharacter {
         super("Model", 7, 1, 1);
     }
 
-    public boolean attrackZombie(){
-       return true;
-    }
 
     @Override
     public int getVote() {

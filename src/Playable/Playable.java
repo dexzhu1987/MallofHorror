@@ -7,9 +7,9 @@ import Item.*;
 public class Playable {
     protected String name;
     protected String color;
-    List<GameCharacter> characters;
-    List<GameCharacter> charactersselect;
-    List<Item> currentItem;
+    protected List<GameCharacter> characters;
+    protected List<GameCharacter> charactersselect;
+    protected List<Item> currentItem;
 
     public Playable() {
         name = "";
